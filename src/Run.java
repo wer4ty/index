@@ -11,12 +11,6 @@ import java.util.List;
  */
 public class Run {
 
-	/**
-	 * TODO Put here a description of what this method does.
-	 *
-	 * @param args
-	 */
-	
 	
 	public static List<String> readLines(File file) throws Exception {
 		int countLines = 0;
@@ -36,9 +30,12 @@ public class Run {
 	  }
 	
 	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub.
-		File dataFile = new File("./resourse/data.dat");
-		readLines(dataFile);
+		//File dataFile = new File("./resourse/data.dat");
+		//readLines(dataFile);
+		
+		String l = "25 52 164 240 834";
+		Point p = new Point(l);
+		System.out.println(p.getPoint());
 	}
 
 }
