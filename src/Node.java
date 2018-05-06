@@ -11,16 +11,20 @@ public class Node {
 	List<Region> r = new ArrayList<Region>();
 	
 	public Node() {
-		addRegion();
+		System.out.println("Create node");
 	}
 	
-	public void addRegion() {
+	public void addRegion(Point p) {
 		if (regions_num > 0) {
-			r.add(new Region());
+			r.add(new Region(p.getCoords()));
 			regions_num--;
 		}
 		else {
 			System.out.println("Cannot add region into current node need split");
 		}
+	}
+	
+	public void insertToNode(Point p) {
+		addRegion(p);
 	}
 }

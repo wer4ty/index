@@ -18,8 +18,14 @@ public class Point {
 		}
 	   }
 	
+	public List<Integer> getCoords() {
+		return coords;
+	}
+	
 	public int getDimension() { return dimension; }
 	public void setDimension(int d) { dimension = d; }
 	public String getPoint() 
+	{ return "Coords: "+coords.toString()+" D: "+dimension; }
+	public String toString() 
 	{ return "Coords: "+coords.toString()+" D: "+dimension; }
 }
