@@ -11,11 +11,14 @@ public class RplusTree {
 	int maxPointsInRegion;
 	int maxRegionsInNode;
 	
-	public RplusTree(int n1, int n2) {
+	List<Integer> init_bounds = new ArrayList<Integer>();
+	
+	public RplusTree(int n1, int n2, List<Integer> space) {
 		System.out.println("Init Rplus Tree");
-		root = new Node(maxRegionsInNode);
-		
 		maxPointsInRegion = n1;
 		maxRegionsInNode = n2;
+		init_bounds = space;
+		
+		root = new Node(maxRegionsInNode, init_bounds);
 	}
 }

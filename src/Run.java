@@ -40,7 +40,13 @@ public class Run {
 		Point p5 = new Point(5, 6,2);
 		Point p6 = new Point(6, 7,7);
 		
-		RplusTree t = new RplusTree(3,3);
+		List<Integer> init_bounds = new ArrayList<Integer>();
+		init_bounds.add(0);
+		init_bounds.add(0);
+		init_bounds.add(10);
+		init_bounds.add(10);
+		
+		RplusTree t = new RplusTree(3,3, init_bounds);
 		
 	}
 
