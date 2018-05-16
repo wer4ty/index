@@ -10,6 +10,7 @@ public class Region {
 	List<Point> data = new ArrayList<Point>();
 	Node child;
 	int capacity;
+	int currentCapacity = 0;
 	
 	// quadratic base
 	int min_x, min_y, max_x, max_y;
@@ -28,9 +29,22 @@ public class Region {
 		return false;
 	}
 	
+	public void insert(Point p) {
+		data.add(p);
+		currentCapacity++;
+	}
+	
+	public Node split() {
+		// implement spliting function
+		return null;
+	}
+	
 	public int getMinX() { return min_x; }
 	public int getMinY() { return min_y; }
 	public int getMaxX() { return max_x; }
 	public int getMaxY() { return max_y; }
-	
+	public int getCapacity() { return capacity; }
+	public int getCurrentCapacity() { return currentCapacity; }
+	public Node getChild() { return child; }
+	public boolean isFull() { if(currentCapacity >= capacity)  return true;  else return false; }
 }

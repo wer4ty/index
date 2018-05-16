@@ -17,15 +17,6 @@ public class Node {
 		r.add(new Region(r_space.get(0), r_space.get(1), r_space.get(2), r_space.get(3), capacity));
 	}
 	
-	public void insert(Point p) {
-		Region r_out = findRegionForPoint(p);
-		if (r_out == null) 
-			System.out.println("Point not in tree space");
-		else {
-			// insert into child if
-			
-		}
-	}
 	
 	public Region findRegionForPoint(Point p) {
 		for (int i=0; i<r.size(); i++) {

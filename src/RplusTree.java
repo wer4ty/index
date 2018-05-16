@@ -21,7 +21,28 @@ public class RplusTree {
 		root = new Node(maxRegionsInNode, init_bounds);
 	}
 	
-	public void insert(Point p) {
-		root.insert(p);
+	public Node getRoot() { return root; }
+	
+	public void insert(Node node, Point p) {
+		Region r_out = node.findRegionForPoint(p);
+		if (r_out == null) 
+			System.out.println("Point not in tree space");
+		else {
+			// insert into region if it in child node 
+			if(r_out.getChild() == null) {
+				// and not reach capacity of points
+				if( !(r_out.isFull()) ) {
+					r_out.insert(p);
+				}
+				// reach capacity split current node and his region into sub-regions
+				else {
+					r_out.split();
+				}
+			}
+			// if it's not leaf recursivly downward to leaf
+				insert(r_out.getChild(), p);
+			}	
 	}
+	
+	
 }
