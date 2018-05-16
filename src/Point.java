@@ -17,6 +17,10 @@ public class Point {
 		y = _y;
 	}
 	
+	public int getX() { return x; }
+	public int getY() { return y; }
+	public int getId() { return id; }
+	
 //	public Point(String line) {
 //		String[] s = line.split("\\s+");
 //		dimension = s.length;

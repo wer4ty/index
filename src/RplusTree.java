@@ -18,7 +18,10 @@ public class RplusTree {
 		maxPointsInRegion = n1;
 		maxRegionsInNode = n2;
 		init_bounds = space;
-		
 		root = new Node(maxRegionsInNode, init_bounds);
+	}
+	
+	public void insert(Point p) {
+		root.insert(p);
 	}
 }

@@ -19,6 +19,15 @@ public class Region {
 		child = null;	
 	}
 	
+	public boolean RegionOverlaps(Point p) {
+		int px = p.getX();
+		int py = p.getY();
+		
+		if (min_x <= px && px < max_x && min_y <= py && py < max_y )
+			return true;
+		return false;
+	}
+	
 	public int getMinX() { return min_x; }
 	public int getMinY() { return min_y; }
 	public int getMaxX() { return max_x; }
