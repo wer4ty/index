@@ -7,25 +7,32 @@ import java.util.List;
  *         Created May 3, 2018.
  */
 public class Point {
-	List<Integer> coords = new ArrayList<Integer>();
-	int dimension;
+	int id;
+	int x, y;
 	
-	public Point(String line) {
-		String[] s = line.split("\\s+");
-		dimension = s.length;
-		for (int i=0; i < s.length; i++) {
-			coords.add(Integer.parseInt(s[i]));
-		}
-	   }
-	
-	public List<Integer> getCoords() {
-		return coords;
+	public Point(int _id, int _x, int _y) {
+		System.out.println("Point created");
+		id = _id;
+		x = _x;
+		y = _y;
 	}
 	
-	public int getDimension() { return dimension; }
-	public void setDimension(int d) { dimension = d; }
-	public String getPoint() 
-	{ return "Coords: "+coords.toString()+" D: "+dimension; }
-	public String toString() 
-	{ return "Coords: "+coords.toString()+" D: "+dimension; }
+//	public Point(String line) {
+//		String[] s = line.split("\\s+");
+//		dimension = s.length;
+//		for (int i=0; i < s.length; i++) {
+//			coords.add(Integer.parseInt(s[i]));
+//		}
+//	   }
+//	
+//	public List<Integer> getCoords() {
+//		return coords;
+//	}
+//	
+//	public int getDimension() { return dimension; }
+//	public void setDimension(int d) { dimension = d; }
+//	public String getPoint() 
+//	{ return "Coords: "+coords.toString()+" D: "+dimension; }
+//	public String toString() 
+//	{ return "Coords: "+coords.toString()+" D: "+dimension; }
 }

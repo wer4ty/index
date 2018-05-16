@@ -9,18 +9,14 @@ import java.util.List;
 public class Region {
 	List<Point> data = new ArrayList<Point>();
 	Node child;
+	int capacity;
 	
 	// quadratic base
 	int min_x, min_y, max_x, max_y;
 	
 	public Region(List<Integer> coords) {
 		System.out.println("Create new bound region");
-		child = null;
-		
-		min_x = coords.get(0);
-		min_y = coords.get(1);
-		max_x = coords.get(0);
-		max_y = coords.get(1);
+		child = null;	
 	}
 	
 	public int getMinX() { return min_x; }
@@ -28,5 +24,4 @@ public class Region {
 	public int getMaxX() { return max_x; }
 	public int getMaxY() { return max_y; }
 	
-	public void createChildNode() {}
 }

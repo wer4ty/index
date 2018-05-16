@@ -33,15 +33,7 @@ public class Run {
 		//File dataFile = new File("./resourse/data.dat");
 		//readLines(dataFile);
 		
-		RplusTree tree = new RplusTree();
-		
-		tree.insert(new Point("10 20"));
-//		tree.insert(new Point("30 60"));
-//		tree.insert(new Point("70 75"));
-//		tree.insert(new Point("90 29"));
-//		tree.insert(new Point("14 38"));
-//		
-//		tree.display();
+		Point p1 = new Point(1, 3,3);
 	}
 
 }

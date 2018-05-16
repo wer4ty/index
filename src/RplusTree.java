@@ -8,14 +8,11 @@ import java.util.List;
  */
 public class RplusTree {
 	Node root;
+	int maxPointsInRegion;
+	int maxRegionsInNode;
 	
 	public RplusTree() {
 		System.out.println("Init Rplus Tree");
 		root = new Node();
-	}
-	
-	public void insert(Point p) {
-		System.out.println("\t add point "+p.toString());
-		root.insertToNode(p);
 	}
 }
