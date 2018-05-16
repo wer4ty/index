@@ -13,6 +13,6 @@ public class RplusTree {
 	
 	public RplusTree() {
 		System.out.println("Init Rplus Tree");
-		root = new Node();
+		root = new Node(maxRegionsInNode);
 	}
 }
