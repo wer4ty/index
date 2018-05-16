@@ -14,8 +14,8 @@ public class Region {
 	// quadratic base
 	int min_x, min_y, max_x, max_y;
 	
-	public Region(List<Integer> coords) {
-		System.out.println("Create new bound region");
+	public Region(int x1, int y1, int x2, int y2, int c) {
+		System.out.println("Create new region");
 		child = null;	
 	}
 	

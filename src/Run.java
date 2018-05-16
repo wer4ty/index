@@ -34,6 +34,14 @@ public class Run {
 		//readLines(dataFile);
 		
 		Point p1 = new Point(1, 3,3);
+		Point p2 = new Point(2, 4,7);
+		Point p3 = new Point(3, 5,2);
+		Point p4 = new Point(4, 3,8);
+		Point p5 = new Point(5, 6,2);
+		Point p6 = new Point(6, 7,7);
+		
+		RplusTree t = new RplusTree(3,3);
+		
 	}
 
 }

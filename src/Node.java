@@ -13,5 +13,6 @@ public class Node {
 	public Node(int c) {
 		System.out.println("Create node");
 		capacity = c;
+		r.add(new Region());
 	}
 }

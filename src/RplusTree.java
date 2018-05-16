@@ -11,8 +11,11 @@ public class RplusTree {
 	int maxPointsInRegion;
 	int maxRegionsInNode;
 	
-	public RplusTree() {
+	public RplusTree(int n1, int n2) {
 		System.out.println("Init Rplus Tree");
 		root = new Node(maxRegionsInNode);
+		
+		maxPointsInRegion = n1;
+		maxRegionsInNode = n2;
 	}
 }
