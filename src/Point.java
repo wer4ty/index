@@ -11,7 +11,6 @@ public class Point {
 	int x, y;
 	
 	public Point(int _id, int _x, int _y) {
-		System.out.println("Point created");
 		id = _id;
 		x = _x;
 		y = _y;

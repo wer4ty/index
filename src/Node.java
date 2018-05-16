@@ -12,7 +12,6 @@ public class Node {
 	List<Integer> init_r = new ArrayList<Integer>();
 	
 	public Node(int c, List<Integer> r_space) {
-		System.out.println("Create node");
 		capacity = c;
 		r.add(new Region(r_space.get(0), r_space.get(1), r_space.get(2), r_space.get(3), capacity));
 	}

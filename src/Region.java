@@ -16,14 +16,17 @@ public class Region {
 	int min_x, min_y, max_x, max_y;
 	
 	public Region(int x1, int y1, int x2, int y2, int c) {
-		System.out.println("Create new region");
+		min_x = x1;
+		min_y = y1;
+		max_x = x2;
+		max_y = y2;
 		child = null;	
 	}
 	
 	public boolean RegionOverlaps(Point p) {
 		int px = p.getX();
 		int py = p.getY();
-		
+		System.out.println("P("+px+", "+py+") R("+min_x+", "+min_y+", "+max_x+", "+max_y+")");
 		if (min_x <= px && px < max_x && min_y <= py && py < max_y )
 			return true;
 		return false;

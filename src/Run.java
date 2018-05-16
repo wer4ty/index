@@ -47,6 +47,7 @@ public class Run {
 		init_bounds.add(10);
 		
 		RplusTree t = new RplusTree(3,3, init_bounds);
+		t.insert(t.getRoot(), p1);
 		
 	}
 
