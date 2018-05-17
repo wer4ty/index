@@ -20,13 +20,14 @@ public class Region {
 		min_y = y1;
 		max_x = x2;
 		max_y = y2;
+		capacity = c;
 		child = null;	
 	}
 	
 	public boolean RegionOverlaps(Point p) {
 		int px = p.getX();
 		int py = p.getY();
-		System.out.println("P("+px+", "+py+") R("+min_x+", "+min_y+", "+max_x+", "+max_y+")");
+		//System.out.println("P("+px+", "+py+") R("+min_x+", "+min_y+", "+max_x+", "+max_y+")");
 		if (min_x <= px && px < max_x && min_y <= py && py < max_y )
 			return true;
 		return false;
@@ -49,5 +50,13 @@ public class Region {
 	public int getCapacity() { return capacity; }
 	public int getCurrentCapacity() { return currentCapacity; }
 	public Node getChild() { return child; }
-	public boolean isFull() { if(currentCapacity >= capacity)  return true;  else return false; }
+	public boolean isFull() {
+		if(currentCapacity >= capacity)  return true;  else return false; 
+		}
+	
+	public void displayPoints() {
+		for (int i=0; i<data.size(); i++) {
+			System.out.println(data.get(i));
+		}
+	}
 }

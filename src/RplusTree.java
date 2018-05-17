@@ -38,7 +38,9 @@ public class RplusTree {
 					r_out.split();
 				}
 			}
+			
 			// if it's not leaf recursivly downward to leaf
+			else 
 				insert(r_out.getChild(), p);
 			}	
 	}

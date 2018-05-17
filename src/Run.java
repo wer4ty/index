@@ -48,6 +48,14 @@ public class Run {
 		
 		RplusTree t = new RplusTree(3,3, init_bounds);
 		t.insert(t.getRoot(), p1);
+		t.insert(t.getRoot(), p2);
+		t.insert(t.getRoot(), p3);
+		t.insert(t.getRoot(), p4); // no enter region is full -> need split
+		
+		List <Region> tr =  t.getRoot().getRegions();
+		for (int i=0; i<tr.size(); i++) {
+			tr.get(i).displayPoints();
+		}
 		
 	}
 

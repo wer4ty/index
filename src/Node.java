@@ -24,4 +24,6 @@ public class Node {
 		return null;
 	}
 	
+	public List<Region> getRegions() { return r; }
+	
 }
