@@ -50,7 +50,7 @@ public class Run {
 		t.insert(t.getRoot(), p1);
 		t.insert(t.getRoot(), p2);
 		t.insert(t.getRoot(), p3);
-		t.insert(t.getRoot(), p4); // no enter region is full -> need split
+		//t.insert(t.getRoot(), p4); // no enter region is full -> need split
 		
 		List <Region> tr =  t.getRoot().getRegions();
 		for (int i=0; i<tr.size(); i++) {
