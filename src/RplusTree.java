@@ -52,7 +52,9 @@ public class RplusTree {
 			if(r.get(i).getChild() != null) {
 				printTree(r.get(i).getChild());
 			}
-			r.get(i).displayPoints();
+			else {
+				r.get(i).displayPoints();
+			}
 		}
 	}
 	
