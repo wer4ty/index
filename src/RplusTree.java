@@ -50,6 +50,7 @@ public class RplusTree {
 		List<Region> r = n.getRegions();
 		for (int i=0; i<r.size(); i++) {
 			if(r.get(i).getChild() != null) {
+				
 				printTree(r.get(i).getChild());
 			}
 			else {

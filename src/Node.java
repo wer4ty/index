@@ -27,6 +27,9 @@ public class Node {
 	
 	public List<Region> getRegions() { return r; }
 	
+	public void displayNode() {
+		
+	}
 		
 	public Node split(Point p, Region mbr) {
 		// if it is possible to add new region in current node
