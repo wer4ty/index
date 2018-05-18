@@ -35,10 +35,9 @@ public class Run {
 		
 		Point p1 = new Point(1, 3,3);
 		Point p2 = new Point(2, 4,7);
-		Point p3 = new Point(3, 5,2);
-		Point p4 = new Point(4, 3,8);
-		Point p5 = new Point(5, 6,2);
-		Point p6 = new Point(6, 7,7);
+		Point p3 = new Point(3, 7,2);
+		Point p4 = new Point(4, 8,8);
+		Point p5 = new Point(5, 6,4);
 		
 		List<Integer> init_bounds = new ArrayList<Integer>();
 		init_bounds.add(0);
@@ -46,17 +45,16 @@ public class Run {
 		init_bounds.add(10);
 		init_bounds.add(10);
 		
-		RplusTree t = new RplusTree(3,3, init_bounds);
+		RplusTree t = new RplusTree(2,2, init_bounds);
 		t.insert(t.getRoot(), p1);
 		t.insert(t.getRoot(), p2);
 		t.insert(t.getRoot(), p3);
-		//t.insert(t.getRoot(), p4); // no enter region is full -> need split
+		t.insert(t.getRoot(), p4); 
 		
-		List <Region> tr =  t.getRoot().getRegions();
-		for (int i=0; i<tr.size(); i++) {
-			tr.get(i).displayPoints();
-		}
+		t.insert(t.getRoot(), p5); 
 		
+		t.printTree(t.getRoot());
+				
 	}
 
 }

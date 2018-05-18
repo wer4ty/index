@@ -8,8 +8,8 @@ import java.util.List;
  */
 public class RplusTree {
 	Node root;
-	int maxPointsInRegion;
-	int maxRegionsInNode;
+	public static int maxPointsInRegion;
+	public static int maxRegionsInNode;
 	
 	List<Integer> init_bounds = new ArrayList<Integer>();
 	
@@ -35,7 +35,7 @@ public class RplusTree {
 				}
 				// reach capacity split current node and his region into sub-regions
 				else {
-					r_out.split();
+					node.split(p, r_out);
 				}
 			}
 			
@@ -43,6 +43,17 @@ public class RplusTree {
 			else 
 				insert(r_out.getChild(), p);
 			}	
+	}
+	
+	
+	public void printTree(Node n) {
+		List<Region> r = n.getRegions();
+		for (int i=0; i<r.size(); i++) {
+			if(r.get(i).getChild() != null) {
+				printTree(r.get(i).getChild());
+			}
+			r.get(i).displayPoints();
+		}
 	}
 	
 	

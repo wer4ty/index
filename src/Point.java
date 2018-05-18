@@ -19,6 +19,8 @@ public class Point {
 	public int getX() { return x; }
 	public int getY() { return y; }
 	public int getId() { return id; }
+
+	public String toString()  { return "P: ("+x+", "+y+")"; }
 	
 //	public Point(String line) {
 //		String[] s = line.split("\\s+");
@@ -36,6 +38,5 @@ public class Point {
 //	public void setDimension(int d) { dimension = d; }
 //	public String getPoint() 
 //	{ return "Coords: "+coords.toString()+" D: "+dimension; }
-//	public String toString() 
-//	{ return "Coords: "+coords.toString()+" D: "+dimension; }
+
 }

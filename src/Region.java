@@ -23,11 +23,13 @@ public class Region {
 		capacity = c;
 		child = null;	
 	}
+
+	public List<Point> getPoints() { return data; }
 	
 	public boolean RegionOverlaps(Point p) {
 		int px = p.getX();
 		int py = p.getY();
-		//System.out.println("P("+px+", "+py+") R("+min_x+", "+min_y+", "+max_x+", "+max_y+")");
+		//System.out.println("P("+px+", "+py+") R{"+min_x+", "+min_y+", "+max_x+", "+max_y+"}");
 		if (min_x <= px && px < max_x && min_y <= py && py < max_y )
 			return true;
 		return false;
@@ -35,12 +37,10 @@ public class Region {
 	
 	public void insert(Point p) {
 		data.add(p);
-		currentCapacity++;
 	}
-	
-	public Node split() {
-		// implement spliting function
-		return null;
+
+	public void clear() {
+		data.clear();
 	}
 	
 	public int getMinX() { return min_x; }
@@ -48,15 +48,28 @@ public class Region {
 	public int getMaxX() { return max_x; }
 	public int getMaxY() { return max_y; }
 	public int getCapacity() { return capacity; }
-	public int getCurrentCapacity() { return currentCapacity; }
 	public Node getChild() { return child; }
+	
+	
+	public void setMinX(int _c) {  min_x = _c; }
+	public void setMinY(int _c) {  min_y  = _c; }
+	public void setMaxX(int _c) {  max_x  = _c; }
+	public void setMaxY(int _c) {  max_y  = _c; }
+	public void setCapacity(int _c) {  capacity = _c; }
+	
+
+
 	public boolean isFull() {
-		if(currentCapacity >= capacity)  return true;  else return false; 
+		if(data.size() >= capacity)  return true;  else return false; 
 		}
 	
+	public String toString()  { return "R: ("+min_x+", "+min_y+", "+max_x+", "+max_y+")"; }
+	
 	public void displayPoints() {
+		System.out.println(this);
 		for (int i=0; i<data.size(); i++) {
-			System.out.println(data.get(i));
+			System.out.print(data.get(i)+", ");
 		}
+		System.out.println();
 	}
 }
