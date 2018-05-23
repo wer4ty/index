@@ -39,21 +39,9 @@ public class Run {
 		Point p4 = new Point(4, 8,8);
 		Point p5 = new Point(5, 6,4);
 		
-		List<Integer> init_bounds = new ArrayList<Integer>();
-		init_bounds.add(0);
-		init_bounds.add(0);
-		init_bounds.add(10);
-		init_bounds.add(10);
 		
-		RplusTree t = new RplusTree(2,2, init_bounds);
-		t.insert(t.getRoot(), p1);
-		t.insert(t.getRoot(), p2);
-		t.insert(t.getRoot(), p3);
-		t.insert(t.getRoot(), p4); 
-		
-		t.insert(t.getRoot(), p5); 
-		
-		t.printTree(t.getRoot());
+		RplusTree t = new RplusTree(2,2);
+		t.insert(p1);
 				
 	}
 

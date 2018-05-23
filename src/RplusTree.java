@@ -11,53 +11,53 @@ public class RplusTree {
 	public static int maxPointsInRegion;
 	public static int maxRegionsInNode;
 	
-	List<Integer> init_bounds = new ArrayList<Integer>();
+	// quadratic base min_x, min_y, max_x, max_y
+	List<Integer> space = new ArrayList<Integer>();
 	
-	public RplusTree(int n1, int n2, List<Integer> space) {
+	public RplusTree(int n1, int n2) {
 		maxPointsInRegion = n1;
 		maxRegionsInNode = n2;
-		init_bounds = space;
-		root = new Node(maxRegionsInNode, init_bounds);
+		
+		space.add(0);
+		space.add(0);
+		space.add((int)Double.POSITIVE_INFINITY);
+		space.add((int)Double.POSITIVE_INFINITY);
+
+		root = new Node(maxRegionsInNode, space);
 	}
 	
-	public Node getRoot() { return root; }
+	public Node get() { return root; }
 	
-	public void insert(Node node, Point p) {
-		Region r_out = node.findRegionForPoint(p);
-		if (r_out == null) 
-			System.out.println("Point not in tree space");
-		else {
-			// insert into region if it in child node 
-			if(r_out.getChild() == null) {
-				// and not reach capacity of points
-				if( !(r_out.isFull()) ) {
-					r_out.insert(p);
+	public void insert(Point p) {
+		// find leaf
+		int px = p.getX(), py = p.getY();
+		Node tmp = root;
+		while (! tmp.isLeaf() ) {
+			List<NodeChild> ch = tmp.getChilds();
+			for(int i=0; i<ch.size(); i++) {
+				NodeChild nc = ch.get(i);
+				if (nc.getRegion().RegionOverlaps(p)) {
+					tmp = nc.getChild();
+					break;
 				}
-				// reach capacity split current node and his region into sub-regions
-				else {
-					node.split(p, r_out);
-				}
-			}
-			
-			// if it's not leaf recursivly downward to leaf
-			else 
-				insert(r_out.getChild(), p);
-			}	
-	}
-	
-	
-	public void printTree(Node n) {
-		List<Region> r = n.getRegions();
-		for (int i=0; i<r.size(); i++) {
-			if(r.get(i).getChild() != null) {
-				
-				printTree(r.get(i).getChild());
-			}
-			else {
-				r.get(i).displayPoints();
 			}
 		}
+		// find good region in this node 
+		Region reg_goal = tmp.findRegionForPoint(p);
+		
+		if (reg_goal != null && !(reg_goal.isFull()) ) {
+				reg_goal.insert(p); 
+		}
+		
+		// create new in current node
+		else {
+			if(!(tmp.isFull())) { 
+		}
+		
 	}
+		
+	}
+	
 	
 	
 }

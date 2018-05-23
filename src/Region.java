@@ -15,13 +15,20 @@ public class Region {
 	// quadratic base
 	int min_x, min_y, max_x, max_y;
 	
+	public Region(int c) {
+		min_x = 0;
+		min_y = 0;
+		max_x = (int)Double.POSITIVE_INFINITY;
+		max_y = (int)Double.POSITIVE_INFINITY;
+		capacity = c;	
+	}
+	
 	public Region(int x1, int y1, int x2, int y2, int c) {
 		min_x = x1;
 		min_y = y1;
 		max_x = x2;
 		max_y = y2;
-		capacity = c;
-		child = null;	
+		capacity = c;	
 	}
 
 	public List<Point> getPoints() { return data; }
@@ -30,7 +37,10 @@ public class Region {
 		int px = p.getX();
 		int py = p.getY();
 		//System.out.println("P("+px+", "+py+") R{"+min_x+", "+min_y+", "+max_x+", "+max_y+"}");
-		if (min_x <= px && px < max_x && min_y <= py && py < max_y )
+			if (min_x <= px 
+				&& px < max_x 
+				&& min_y <= py 
+				&& py < max_y )
 			return true;
 		return false;
 	}
@@ -48,7 +58,6 @@ public class Region {
 	public int getMaxX() { return max_x; }
 	public int getMaxY() { return max_y; }
 	public int getCapacity() { return capacity; }
-	public Node getChild() { return child; }
 	
 	
 	public void setMinX(int _c) {  min_x = _c; }
