@@ -29,7 +29,8 @@ public class Node {
 		return null;
 	}
 	
-	public boolean isFull() { if(r.size() >= capacity)  return true;  else return false; } 
+	public boolean isFull() { if(r.size() >= capacity)  return true;  else return false; }
+	
 	
 
 	public List<Region> getRegions() { return r; }
@@ -45,6 +46,10 @@ public class Node {
 		r.add(region);
 	}
 	
+	public void insertChild(NodeChild n) {
+		childs.add(n);
+	}
+	
 	public List<Integer> expand() {
 		int _minX = (int)Double.POSITIVE_INFINITY,
 			_minY = (int)Double.POSITIVE_INFINITY,
@@ -52,11 +57,11 @@ public class Node {
 			_maxY = 0;
 		
 			int rmin_x, rmin_y, rmax_x, rmax_y;
-			for (int i=0; i<childs.size(); i++) {
-				rmin_x = childs.get(i).getRegion().getMinX();
-				rmin_y = childs.get(i).getRegion().getMinY();
-				rmax_x = childs.get(i).getRegion().getMaxX();
-				rmax_y = childs.get(i).getRegion().getMaxY();
+			for (int i=0; i<r.size(); i++) {
+				rmin_x = r.get(i).getMinX();
+				rmin_y = r.get(i).getMinY();
+				rmax_x = r.get(i).getMaxX();
+				rmax_y = r.get(i).getMaxY();
 				if (rmin_x < _minX) _minX = rmin_x;
 				if (rmax_x > _maxX) _maxX = rmax_x;
 				

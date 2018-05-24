@@ -30,6 +30,14 @@ public class Region {
 		max_y = y2;
 		capacity = c;	
 	}
+	
+	public Region(List<Integer> intSpace, int c) {
+		min_x = intSpace.get(0);
+		min_y = intSpace.get(1);
+		max_x = intSpace.get(2);
+		max_y = intSpace.get(3);
+		capacity = c;	
+	}
 
 	public List<Point> getPoints() { return data; }
 	
@@ -96,7 +104,7 @@ public class Region {
 		if(data.size() >= capacity)  return true;  else return false; 
 		}
 	
-	public String toString()  { return "\tR: ("+min_x+", "+min_y+", "+max_x+", "+max_y+")\n \t\t{"+data+"}\n"; }
+	public String toString()  { return "\tR: ("+min_x+", "+min_y+", "+max_x+", "+max_y+")"; }
 	
 	public void displayPoints() {
 		System.out.println(this);
