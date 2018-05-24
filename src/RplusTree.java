@@ -74,7 +74,7 @@ public class RplusTree {
 		return pList;
 	}
 	
-	public void load(File f) {
+	public Node load(File f) {
 		try {
 			List <Point> rl = readLines(f);
 			int minX=0, minY=0, maxX=0, maxY=0;
@@ -124,16 +124,17 @@ public class RplusTree {
 				
 				regionsAdded = 0;
 				for (int i=0; i<Nodes_num; i++) {
-					System.out.println(Nodes_num+"::"+i);
+					
 					Node tmp_node = new Node(RplusTree.maxRegionsInNode);
-					while(!tmp_node.isFull() && regionsAdded < currentLevel.size() && currentLevel.get(regionsAdded) != null){
-						System.out.println("\t"+regionsAdded);
+					while(!tmp_node.isFull() && regionsAdded < Nodes_num){
+						
 						Region tmp_inside_region = new Region(currentLevel.get(regionsAdded).expand(), RplusTree.maxRegionsInNode);
 						tmp_node.insert(tmp_inside_region);
 						tmp_node.insertChild(new NodeChild(tmp_inside_region, currentLevel.get(regionsAdded)));
 						regionsAdded++;
 					}
-					upperLevel.add(tmp_node);
+					
+						upperLevel.add(tmp_node);
 				}
 				
 				
@@ -141,12 +142,24 @@ public class RplusTree {
 				currentLevel = upperLevel;
 				upperLevel = new ArrayList<Node>();
 				Nodes_num = (int)Math.ceil(Nodes_num /(float)RplusTree.maxRegionsInNode);
-				System.out.println(currentLevel);
+				
 			}
+			
+			// bild root	
+			regionsAdded = 0;
+			Node bild_root = new Node(RplusTree.maxRegionsInNode);
+			while(!bild_root.isFull() && regionsAdded < Nodes_num){
+				Region tmp_inside_region = new Region(currentLevel.get(regionsAdded).expand(), RplusTree.maxRegionsInNode);
+				bild_root.insert(tmp_inside_region);
+				bild_root.insertChild(new NodeChild(tmp_inside_region, currentLevel.get(regionsAdded)));
+				regionsAdded++;
+			}
+			return bild_root;
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
 	}
 	

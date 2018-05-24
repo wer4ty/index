@@ -27,4 +27,6 @@ public class NodeChild {
 		if (child == c) return this;
 		 return null;
 	}
+	
+	public String toString()  { return "\n\tNC: ("+region.min_x+", "+region.min_y+", "+region.max_x+", "+region.max_y+") \n{"+child+"}"; }
 }

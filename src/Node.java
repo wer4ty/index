@@ -79,6 +79,6 @@ public class Node {
 			return newSizes;
 	}
 	
-	public String toString()  { return "Node: "+r+"\n"; }
+	public String toString()  { return "Node: "+r+"\n"+childs+"\n"; }
 	
 }

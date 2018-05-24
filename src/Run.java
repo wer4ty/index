@@ -12,7 +12,7 @@ import java.util.List;
 public class Run {
 
 	public static void main(String[] args) throws Exception {
-		File dataFile = new File("./resourse/do_data.dat");
+		File dataFile = new File("./resourse/data.dat");
 		
 		Point p1 = new Point(1, 3,3);
 		Point p2 = new Point(2, 4,7);
@@ -22,7 +22,7 @@ public class Run {
 		
 		
 		RplusTree t = new RplusTree(2,2);
-		t.load(dataFile);
+		System.out.println(t.load(dataFile));
 		//t.insert(p1);
 				
 	}
