@@ -11,27 +11,8 @@ import java.util.List;
  */
 public class Run {
 
-	
-	public static List<String> readLines(File file) throws Exception {
-		int countLines = 0;
-	      if (!file.exists()) {
-	          return new ArrayList<String>();
-	      }
-	      BufferedReader reader = new BufferedReader(new FileReader(file));
-	      List<String> results = new ArrayList<String>();
-	      String line = reader.readLine();
-	      while (line != null) {
-	          results.add(line);
-	          line = reader.readLine();
-	          countLines++;
-	      }
-	      System.out.println(countLines);
-	      return results;
-	  }
-	
 	public static void main(String[] args) throws Exception {
-		//File dataFile = new File("./resourse/data.dat");
-		//readLines(dataFile);
+		File dataFile = new File("./resourse/do_data.dat");
 		
 		Point p1 = new Point(1, 3,3);
 		Point p2 = new Point(2, 4,7);
@@ -41,7 +22,8 @@ public class Run {
 		
 		
 		RplusTree t = new RplusTree(2,2);
-		t.insert(p1);
+		t.load(dataFile);
+		//t.insert(p1);
 				
 	}
 

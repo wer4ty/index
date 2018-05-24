@@ -19,24 +19,19 @@ public class Point {
 	public int getX() { return x; }
 	public int getY() { return y; }
 	public int getId() { return id; }
-
-	public String toString()  { return "P: ("+x+", "+y+")"; }
 	
-//	public Point(String line) {
-//		String[] s = line.split("\\s+");
-//		dimension = s.length;
-//		for (int i=0; i < s.length; i++) {
-//			coords.add(Integer.parseInt(s[i]));
-//		}
-//	   }
-//	
-//	public List<Integer> getCoords() {
-//		return coords;
-//	}
-//	
-//	public int getDimension() { return dimension; }
-//	public void setDimension(int d) { dimension = d; }
-//	public String getPoint() 
-//	{ return "Coords: "+coords.toString()+" D: "+dimension; }
+	public Point(int _id, String line) {
+		String[] s = line.split("\\s+");
+		id = _id;
+		x = s.length;		
+		int tmp_sum = 0;
+		for (int i=0; i < s.length; i++) {
+			tmp_sum += Integer.parseInt(s[i]);
+		}
+		y = tmp_sum / x;
+	   }
+
+
+	public String toString() { return "P [ID: "+id+": ("+x+", "+y+")]"; }
 
 }
