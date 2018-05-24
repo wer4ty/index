@@ -45,6 +45,35 @@ public class Node {
 		r.add(region);
 	}
 	
-	public String toString()  { return "Node: ["+r+"]\n"; }
+	public List<Integer> expand() {
+		int _minX = (int)Double.POSITIVE_INFINITY,
+			_minY = (int)Double.POSITIVE_INFINITY,
+			_maxX = 0,
+			_maxY = 0;
+		
+			int rmin_x, rmin_y, rmax_x, rmax_y;
+			for (int i=0; i<childs.size(); i++) {
+				rmin_x = childs.get(i).getRegion().getMinX();
+				rmin_y = childs.get(i).getRegion().getMinY();
+				rmax_x = childs.get(i).getRegion().getMaxX();
+				rmax_y = childs.get(i).getRegion().getMaxY();
+				if (rmin_x < _minX) _minX = rmin_x;
+				if (rmax_x > _maxX) _maxX = rmax_x;
+				
+				if (rmin_y < _minY) _minY = rmin_y;
+				if (rmax_y > _maxY) _maxY = rmax_y;
+				
+			}
+			List<Integer> newSizes = new ArrayList<Integer>();
+			newSizes.add(_minX);
+			newSizes.add(_minY);
+			newSizes.add(_maxX);
+			newSizes.add(_maxY);
+			
+			
+			return newSizes;
+	}
+	
+	public String toString()  { return "Node: "+r+"\n"; }
 	
 }

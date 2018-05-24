@@ -50,28 +50,28 @@ public class Region {
 	}
 	
 	public void resize() {
-			int px, py;
 			int _minX = (int)Double.POSITIVE_INFINITY,
 				_minY = (int)Double.POSITIVE_INFINITY,
 				_maxX = 0,
 				_maxY = 0;
 		
-		for (int i=0; i<data.size(); i++) {
-			px = data.get(i).getX();
-			py = data.get(i).getY();
-			if (px < _minX) _minX = px;
-			if (px > _maxX) _maxX = px;
-			
-			if (py < _minY) _minY = py;
-			if (py > _maxY) _maxY = py;
-			
+			int px, py;
+			for (int i=0; i<data.size(); i++) {
+				px = data.get(i).getX();
+				py = data.get(i).getY();
+				if (px < _minX) _minX = px;
+				if (px > _maxX) _maxX = px;
+				
+				if (py < _minY) _minY = py;
+				if (py > _maxY) _maxY = py;
+				
+			}
+
 			min_x = _minX;
 			min_y = _minY;
 			max_x = _maxX;
 			max_y = _maxY;
-			
 		}
-	}
 
 	public void clear() {
 		data.clear();
@@ -96,7 +96,7 @@ public class Region {
 		if(data.size() >= capacity)  return true;  else return false; 
 		}
 	
-	public String toString()  { return "R: ("+min_x+", "+min_y+", "+max_x+", "+max_y+")\n {"+data+"}\n"; }
+	public String toString()  { return "\tR: ("+min_x+", "+min_y+", "+max_x+", "+max_y+")\n \t\t{"+data+"}\n"; }
 	
 	public void displayPoints() {
 		System.out.println(this);
