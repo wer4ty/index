@@ -12,9 +12,7 @@ public class Node {
 	List<NodeChild> childs = new ArrayList<NodeChild>();
 	
 	public Node(int c) {
-		if (c < 3) c = 3;
 		capacity = c;
-		r.add(new Region(capacity));
 	}
 	
 	public Node(int c, List<Integer> space) {
@@ -33,11 +31,20 @@ public class Node {
 	
 	public boolean isFull() { if(r.size() >= capacity)  return true;  else return false; } 
 	
-	public void addRegion(int x1, int y1, int x2, int y2, int c) { 
-		
-	}
+
 	public List<Region> getRegions() { return r; }
 	public List<NodeChild> getChilds() { return childs; }
 	public boolean isLeaf() {  if(childs.size() == 0) return true; else return false; }
+
+	/**
+	 * TODO Put here a description of what this method does.
+	 *
+	 * @param region
+	 */
+	public void insert(Region region) {
+		r.add(region);
+	}
+	
+	public String toString()  { return "Node: ["+r+"]\n"; }
 	
 }

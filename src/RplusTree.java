@@ -13,6 +13,7 @@ public class RplusTree {
 	Node root;
 	public static int maxPointsInRegion;
 	public static int maxRegionsInNode;
+	public int allPoints = 0;
 	
 	// quadratic base min_x, min_y, max_x, max_y
 	List<Integer> space = new ArrayList<Integer>();
@@ -44,27 +45,79 @@ public class RplusTree {
 	          line = reader.readLine();
 	          id++;
 	      }
+	      allPoints = id;
 	      return results;
 	  }
+	
+	
+	
+	
 	private List<Point> reOrder(List<Point> pList) {
 		Point tmp = new Point(1,1,1);
 		for (int i=0; i<pList.size(); i++) {
-			System.out.println(pList.get(i));
+			for (int j=0; j<i; j++) {
+				
+				if (pList.get(j).getX() > pList.get(i).getX()) {
+					tmp = pList.get(j);
+					pList.set(j, pList.get(i));
+					pList.set(i, tmp);
+				}
+				
+				
+				if (pList.get(j).getY() > pList.get(i).getY()) {
+					tmp = pList.get(j);
+					pList.set(j, pList.get(i));
+					pList.set(i, tmp);
+				}
+			}
 		}
-		return null;
+		return pList;
 	}
 	
 	public void load(File f) {
 		try {
 			List <Point> rl = readLines(f);
 			int minX=0, minY=0, maxX=0, maxY=0;
+			
 			for(int i=0; i<rl.size(); i++)  {
-				System.out.println(rl.get(i));
 				if (maxX < rl.get(i).getX()) maxX = rl.get(i).getX();
 				if (maxY < rl.get(i).getY()) maxY = rl.get(i).getY();
 			}
 			System.out.println(minX+" "+minY+" "+maxX+" "+maxY);
-			reOrder(rl);
+			rl = reOrder(rl);
+			
+			System.out.println("TotalPoint="+allPoints+" MaxReg="+RplusTree.maxRegionsInNode+" MaxPointInReg="+RplusTree.maxPointsInRegion);
+			
+			
+			int bottom_regions_num = (int)Math.ceil(allPoints /(float)RplusTree.maxPointsInRegion);
+			
+			int pointAdded = 0;
+			List<Region> bottom_region = new ArrayList<Region>();
+			for (int i=0; i<bottom_regions_num; i++) {
+				Region tmp_region = new Region(RplusTree.maxPointsInRegion);
+				while (!tmp_region.isFull()) {
+					tmp_region.insert(rl.get(pointAdded));
+					pointAdded++;
+				}
+				tmp_region.resize();
+				bottom_region.add(tmp_region);
+			}
+			
+			System.out.println(bottom_region);
+			
+			int leafNodes_num = (int)Math.ceil(bottom_regions_num /(float)RplusTree.maxRegionsInNode);
+			int regionsAdded = 0;
+			List<Node> leafs = new ArrayList<Node>();
+			for (int i=0; i<leafNodes_num; i++) {
+				Node tmp_node = new Node(RplusTree.maxRegionsInNode);
+				while(!tmp_node.isFull()) {
+					tmp_node.insert(bottom_region.get(i));
+					regionsAdded++;
+				}
+				leafs.add(tmp_node);
+			}
+			System.out.println(leafs);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
