@@ -1,8 +1,8 @@
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.InputStreamReader;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Date;
 /**
  * TODO Put here a description of what this class does.
  *
@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class Run {
 
+
+	
 	public static void main(String[] args) throws Exception {
 		long startTime = System.nanoTime();
 		
@@ -20,16 +22,25 @@ public class Run {
 //		Point p4 = new Point(4, 8,8);
 //		Point p5 = new Point(5, 6,4);
 		
-		
-		RplusTree t = new RplusTree(100,10);
-		System.out.println(t.load("./resourse/datatest.dat"));
+		RplusTree t = new RplusTree(3,3);
+		System.out.println(t.load("./resourse/do_data.dat"));
 		//System.out.println("Point search: "+t.selectPoint("78 147 538 634 738"));
-		System.out.println("Region search: "+t.selectRegionOfPoints("78 147 538 634 738"));
+		System.out.println("Region search: "+t.selectRegionOfPoints("2 15 2 39"));
 		
 		long stopTime = System.nanoTime();
 		double seconds = (double)(stopTime - startTime) / 1000000000.0;
-		System.out.printf("%.2f seconds", seconds);
-				
+		System.out.printf("%.2f seconds\n\n", seconds);
+			
+	
+		final ServerSocket server = new ServerSocket(8181);
+	    System.out.println("Listening for connection on port 8181 ....");
+	    while (true){
+	    	 try (Socket socket = server.accept()) {
+	                Date today = new Date();
+	                String httpResponse = "HTTP/1.1 200 OK\r\n\r\n" + today;
+	                socket.getOutputStream().write(httpResponse.getBytes("UTF-8"));
+	            }
+	    }		
 	}
 
 }
