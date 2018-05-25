@@ -12,18 +12,22 @@ import java.util.List;
 public class Run {
 
 	public static void main(String[] args) throws Exception {
-		File dataFile = new File("./resourse/datatest.dat");
+		long startTime = System.nanoTime();
 		
-		Point p1 = new Point(1, 3,3);
-		Point p2 = new Point(2, 4,7);
-		Point p3 = new Point(3, 7,2);
-		Point p4 = new Point(4, 8,8);
-		Point p5 = new Point(5, 6,4);
+//		Point p1 = new Point(1, 3,3);
+//		Point p2 = new Point(2, 4,7);
+//		Point p3 = new Point(3, 7,2);
+//		Point p4 = new Point(4, 8,8);
+//		Point p5 = new Point(5, 6,4);
 		
 		
-		RplusTree t = new RplusTree(1000,4);
-		System.out.println(t.load(dataFile));
-		//t.insert(p1);
+		RplusTree t = new RplusTree(100,10);
+		t.load("./resourse/datatest.dat");
+		System.out.println("Result: "+t.select(new Point(-1, "78 147 538 634 738")));
+		
+		long stopTime = System.nanoTime();
+		double seconds = (double)(stopTime - startTime) / 1000000000.0;
+		System.out.printf("%.2f seconds", seconds);
 				
 	}
 

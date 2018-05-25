@@ -30,8 +30,8 @@ public class Point {
 		}
 		y = tmp_sum / x;
 	   }
-
-
+ 
+	
 	public String toString() { return "P [ID: "+id+": ("+x+", "+y+")]"; }
 
 }

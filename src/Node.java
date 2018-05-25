@@ -22,7 +22,14 @@ public class Node {
 	}
 	
 	
-	public Region findRegionForPoint(Point p) {
+	public Node findInternalRegionForPoint(Point p) {
+		for (int i=0; i<childs.size(); i++) {
+			if(childs.get(i).getRegion().RegionOverlaps(p)) return childs.get(i).getChild();
+		}
+		return null;
+	}
+	
+	public Region findLeafRegionForPoint(Point p) {
 		for (int i=0; i<r.size(); i++) {
 			if(r.get(i).RegionOverlaps(p)) return r.get(i);
 		}

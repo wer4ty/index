@@ -57,6 +57,17 @@ public class Region {
 		data.add(p);
 	}
 	
+	public int search(Point p) {
+		for (int i=0; i<data.size(); i++) {
+			if (p.getX() == data.get(i).getX()
+				&& 	
+				p.getY() == data.get(i).getY()) {
+				return data.get(i).getId();
+			}
+		}
+		return -1;
+	}
+	
 	public void resize() {
 			int _minX = (int)Double.POSITIVE_INFINITY,
 				_minY = (int)Double.POSITIVE_INFINITY,

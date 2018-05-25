@@ -12,22 +12,24 @@ import java.util.List;
 public class RplusTree {
 	Node root;
 	public static int maxPointsInRegion;
-	public static int maxRegionsInNode;
+	public static int maxRegionsInNode;	
 	public int allPoints = 0;
+	public List<String> orig_points;
+	public String dataFile;
 	
 	// quadratic base min_x, min_y, max_x, max_y
 	List<Integer> space = new ArrayList<Integer>();
 	
 	public RplusTree(int n1, int n2) {
 		maxPointsInRegion = n1;
-		maxRegionsInNode = n2;
-		
+		maxRegionsInNode = n2;		
 		space.add(0);
 		space.add(0);
 		space.add((int)Double.POSITIVE_INFINITY);
 		space.add((int)Double.POSITIVE_INFINITY);
 
 		root = new Node(maxRegionsInNode, space);
+		orig_points = new ArrayList<String>();
 	}
 	
 	public Node get() { return root; }
@@ -41,6 +43,7 @@ public class RplusTree {
 	      List<Point> results = new ArrayList<Point>();
 	      String line = reader.readLine();
 	      while (line != null) {
+	    	  orig_points.add(line);
 	          results.add(new Point(id, line));
 	          line = reader.readLine();
 	          id++;
@@ -74,8 +77,30 @@ public class RplusTree {
 		return pList;
 	}
 	
-	public Node load(File f) {
+	
+
+	
+	public String select(Point p) {
+		Node tmp = root;
+		if (tmp != null) {
+			while (!tmp.isLeaf()) {
+				tmp = tmp.findInternalRegionForPoint(p);
+			}
+			Region goal = tmp.findLeafRegionForPoint(p);
+			if (goal != null) {
+				int rs = goal.search(p);
+				if(rs != -1) {
+					return orig_points.get(rs);
+				}
+			}
+		}
+		return "Not Found";
+	}
+	
+	public Node load(String fPath) {
 		try {
+			dataFile = fPath;
+			File f = new File(fPath);
 			List <Point> rl = readLines(f);
 			int minX=0, minY=0, maxX=0, maxY=0;
 			
@@ -83,7 +108,7 @@ public class RplusTree {
 				if (maxX < rl.get(i).getX()) maxX = rl.get(i).getX();
 				if (maxY < rl.get(i).getY()) maxY = rl.get(i).getY();
 			}
-			System.out.println(minX+" "+minY+" "+maxX+" "+maxY);
+			//System.out.println(minX+" "+minY+" "+maxX+" "+maxY);
 			rl = reOrder(rl);
 			
 			System.out.println("TotalPoint="+allPoints+" MaxReg="+RplusTree.maxRegionsInNode+" MaxPointInReg="+RplusTree.maxPointsInRegion);
@@ -154,6 +179,7 @@ public class RplusTree {
 				bild_root.insertChild(new NodeChild(tmp_inside_region, currentLevel.get(regionsAdded)));
 				regionsAdded++;
 			}
+			root = bild_root;
 			return bild_root;
 			
 		} catch (Exception e) {
@@ -163,35 +189,35 @@ public class RplusTree {
 		}
 	}
 	
-	public void insert(Point p) {
-		// find leaf
-		int px = p.getX(), py = p.getY();
-		Node tmp = root;
-		while (! tmp.isLeaf() ) {
-			List<NodeChild> ch = tmp.getChilds();
-			for(int i=0; i<ch.size(); i++) {
-				NodeChild nc = ch.get(i);
-				if (nc.getRegion().RegionOverlaps(p)) {
-					tmp = nc.getChild();
-					break;
-				}
-			}
-		}
-		// find good region in this node 
-		Region reg_goal = tmp.findRegionForPoint(p);
-		
-		if (reg_goal != null && !(reg_goal.isFull()) ) {
-				reg_goal.insert(p); 
-		}
-		
-		// create new in current node
-		else {
-			if(!(tmp.isFull())) { 
-		}
-		
-	}
-		
-	}
+//	public void insert(Point p) {
+//		// find leaf
+//		int px = p.getX(), py = p.getY();
+//		Node tmp = root;
+//		while (! tmp.isLeaf() ) {
+//			List<NodeChild> ch = tmp.getChilds();
+//			for(int i=0; i<ch.size(); i++) {
+//				NodeChild nc = ch.get(i);
+//				if (nc.getRegion().RegionOverlaps(p)) {
+//					tmp = nc.getChild();
+//					break;
+//				}
+//			}
+//		}
+//		// find good region in this node 
+//		Region reg_goal = tmp.findRegionForPoint(p);
+//		
+//		if (reg_goal != null && !(reg_goal.isFull()) ) {
+//				reg_goal.insert(p); 
+//		}
+//		
+//		// create new in current node
+//		else {
+//			if(!(tmp.isFull())) { 
+//		}
+//		
+//	}
+//		
+//	}
 	
 	
 	
