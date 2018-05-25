@@ -23,7 +23,7 @@ public class Run {
 		
 		RplusTree t = new RplusTree(100,10);
 		t.load("./resourse/datatest.dat");
-		System.out.println("Result: "+t.select(new Point(-1, "78 147 538 634 738")));
+		System.out.println("Result: "+t.selectPoint("78 147 538 634 738"));
 		
 		long stopTime = System.nanoTime();
 		double seconds = (double)(stopTime - startTime) / 1000000000.0;

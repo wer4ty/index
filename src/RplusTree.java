@@ -80,7 +80,8 @@ public class RplusTree {
 	
 
 	
-	public String select(Point p) {
+	public String selectPoint(String line) {
+		Point p = new Point(-1, line);
 		Node tmp = root;
 		if (tmp != null) {
 			while (!tmp.isLeaf()) {
@@ -94,6 +95,11 @@ public class RplusTree {
 				}
 			}
 		}
+		return "Not Found";
+	}
+	
+	public String selectRegionOfPoints(String line) {
+		
 		return "Not Found";
 	}
 	
