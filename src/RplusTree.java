@@ -99,7 +99,17 @@ public class RplusTree {
 	}
 	
 	public String selectRegionOfPoints(String line) {
-		
+		// bild search window
+		String[] s = line.split("\\s+");
+		if (s.length != 4) { return "Wrong format List have to be [minX, minY, maxX, maxY]"; }
+		else {
+			List<Integer> search_bounds = new ArrayList<Integer>();
+			for (int i=0; i < s.length; i++) {
+				search_bounds.add(Integer.parseInt(s[i]));
+			}
+			
+			Region sw = new Region(search_bounds, RplusTree.maxPointsInRegion);
+		}
 		return "Not Found";
 	}
 	
