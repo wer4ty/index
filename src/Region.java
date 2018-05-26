@@ -53,6 +53,19 @@ public class Region {
 		return false;
 	}
 	
+	public boolean RegionOverlaps(Region r) {
+		int rminx = r.getMinX();
+		int rminy = r.getMinY();
+		int rmaxx = r.getMaxX();
+		int rmaxy = r.getMaxY();
+			if (min_x <= rminx 
+				&& rmaxx <= max_x 
+				&& min_y <= rminy 
+				&& rmaxy <= max_y )
+			return true;
+		return false;
+	}
+	
 	public void insert(Point p) {
 		data.add(p);
 	}

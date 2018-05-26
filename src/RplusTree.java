@@ -109,6 +109,12 @@ public class RplusTree {
 			}
 			
 			Region sw = new Region(search_bounds, RplusTree.maxPointsInRegion);
+			Node tmp = root;
+			
+			while (!tmp.isLeaf()) {
+				tmp = tmp.findLeafRegionForPoint(p);
+			}
+			
 		}
 		return "Not Found";
 	}
@@ -127,7 +133,7 @@ public class RplusTree {
 			//System.out.println(minX+" "+minY+" "+maxX+" "+maxY);
 			rl = reOrder(rl);
 			
-			System.out.println("TotalPoint="+allPoints+" MaxReg="+RplusTree.maxRegionsInNode+" MaxPointInReg="+RplusTree.maxPointsInRegion);
+			System.out.println("TotalPoint="+allPoints+" MaxRegInNode="+RplusTree.maxRegionsInNode+" MaxPointInReg="+RplusTree.maxPointsInRegion);
 			
 			
 			int bottom_regions_num = (int)Math.ceil(allPoints /(float)RplusTree.maxPointsInRegion);
