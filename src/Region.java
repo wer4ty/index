@@ -53,17 +53,34 @@ public class Region {
 		return false;
 	}
 	
-	public boolean RegionOverlaps(Region r) {
-		int rminx = r.getMinX();
-		int rminy = r.getMinY();
-		int rmaxx = r.getMaxX();
-		int rmaxy = r.getMaxY();
-			if (min_x <= rminx 
-				&& rmaxx <= max_x 
-				&& min_y <= rminy 
-				&& rmaxy <= max_y )
+	public boolean RegionOverlaps(Region sw) {
+		int rminx = this.getMinX(), 
+				rminy = this.getMinY(), 
+				rmaxx = this.getMaxX(),
+				rmaxy = this.getMaxY(),
+			swrminX = sw.getMinX(),
+			swrminY = sw.getMinY(),
+			swrmaxX = sw.getMaxX(),
+			swrmaxY = sw.getMaxY();
+		
+		// part overlap
+		if ( (swrminX >= rminx && swrminX < rmaxx) ||  
+			 (swrminY >= rminy && swrminY < rmaxy) ||
+			 (swrmaxX >= rminx && swrmaxX < rmaxx) ||
+			 (swrmaxY >= rminy && swrmaxY < rmaxy) ) {
 			return true;
-		return false;
+		}
+		
+		else if ( (rminx >= swrminX && rminx < swrmaxX) || 
+			 (rminy >= swrminY && rminy < swrmaxY) ||
+			 (rmaxx >= swrminX && rmaxx < swrmaxX) ||
+			 (rmaxy >= swrminY && rmaxy < swrmaxY) ) {
+			return true;
+		}
+		else 
+			return false;
+		
+		
 	}
 	
 	public void insert(Point p) {

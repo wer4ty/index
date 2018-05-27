@@ -110,9 +110,11 @@ public class RplusTree {
 			
 			Region sw = new Region(search_bounds, RplusTree.maxPointsInRegion);
 			Node tmp = root;
-			
-			while (!tmp.isLeaf()) {
-				tmp = tmp.findLeafRegionForPoint(p);
+			List <Node> visited = new ArrayList<Node>();
+						
+			int index = 0;
+			while (tmp.findInternalRegionForPoint(sw).isEmpty()) {
+				
 			}
 			
 		}
