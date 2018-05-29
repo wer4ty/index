@@ -260,7 +260,7 @@ public class RplusTree {
 				int _minX =(int)Double.POSITIVE_INFINITY, _minY = (int)Double.POSITIVE_INFINITY, _maxX = 0, _maxY = 0;
 				List<Region> reg_of_child = current_child.getRegions();
 				for(int k=0; k<reg_of_child.size(); k++) {
-					Region inR = reg_of_child.get(i);
+					Region inR = reg_of_child.get(k);
 					if (inR.getMinX() < _minX) _minX = inR.getMinX();
 					if (inR.getMinY() < _minY) _minY = inR.getMinY();
 					if (inR.getMaxX() > _maxX) _maxX = inR.getMaxX();
