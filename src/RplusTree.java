@@ -85,7 +85,9 @@ public class RplusTree {
 		Node tmp = root;
 		if (tmp != null) {
 			while (!tmp.isLeaf()) {
-				tmp = tmp.findInternalRegionForPoint(p);
+				Node t = tmp.findInternalRegionForPoint(p);
+				if (t != null) tmp = t;
+				else return "Not Found";
 			}
 			Region goal = tmp.findLeafRegionForPoint(p);
 			if (goal != null) {
@@ -98,7 +100,29 @@ public class RplusTree {
 		return "Not Found";
 	}
 	
+	private void filterDownToleafs(Node node, List<Region> res, Region sw) {
+		if (node.isLeaf()) {
+			List<Region> rc = node.getRegions();
+			for(int i=0; i<rc.size(); i++) {
+				if(rc.get(i).RegionOverlaps(sw)) {
+					res.add(rc.get(i)); 
+				}
+			}
+
+		}
+		else {
+			List<NodeChild> nc = node.getChilds();
+			for(int i=0; i<nc.size(); i++) {
+				if(nc.get(i).getRegion().RegionOverlaps(sw)) {
+					filterDownToleafs(nc.get(i).getChild(), res, sw);
+				}
+			}
+		}
+	}
+	
 	public String selectRegionOfPoints(String line) {
+		List<String> res = new ArrayList<String>();
+		
 		// bild search window
 		String[] s = line.split("\\s+");
 		if (s.length != 4) { return "Wrong format List have to be [minX, minY, maxX, maxY]"; }
@@ -108,17 +132,25 @@ public class RplusTree {
 				search_bounds.add(Integer.parseInt(s[i]));
 			}
 			
-			Region sw = new Region(search_bounds, RplusTree.maxPointsInRegion);
+			Region search_window = new Region(search_bounds, RplusTree.maxPointsInRegion);
+			List<Region> leafs_regions = new ArrayList<Region>();
 			Node tmp = root;
-			List <Node> visited = new ArrayList<Node>();
-						
-			int index = 0;
-			while (tmp.findInternalRegionForPoint(sw).isEmpty()) {
+					
+			filterDownToleafs(tmp,leafs_regions, search_window);
+			
+			for(int i=0; i<leafs_regions.size(); i++) {
+				List<Point> pointsfromReg = leafs_regions.get(i).getPoints();
+					for(int j=0; j<pointsfromReg.size(); j++) {
+						if(search_window.RegionOverlaps(pointsfromReg.get(j))) {
+							res.add(orig_points.get(pointsfromReg.get(j).getId()));
+						}
+					}
+					 
 				
 			}
-			
 		}
-		return "Not Found";
+		if(res.size() > 0) return res.toString();
+		else return "Not Found";
 	}
 	
 	public Node load(String fPath) {
@@ -211,6 +243,35 @@ public class RplusTree {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	
+	public String deletePoint(String line) {
+		Point p = new Point(-1, line);
+		Node tmp = root;
+		if (tmp != null) {
+			while (!tmp.isLeaf()) {
+				Node t = tmp.findInternalRegionForPoint(p);
+				if (t != null) tmp = t;
+				else return "Not Found";
+			}
+			Region goal = tmp.findLeafRegionForPoint(p);
+			if (goal != null) {
+				int rs = goal.searchIndex(p);
+				if(rs != -1) {
+					goal.removePoint(rs); // remove point
+					
+					// if region is empty remove it
+					if (goal.isEmpty()) {
+						tmp.removeRegion(goal);
+						
+						// if node is empty remove node and remove in parent nodechild and region
+					}
+					return "Succesfully deleted";
+				}
+			}
+		}
+		return "Not Found";
 	}
 	
 //	public void insert(Point p) {

@@ -46,9 +46,9 @@ public class Region {
 		int py = p.getY();
 		//System.out.println("P("+px+", "+py+") R{"+min_x+", "+min_y+", "+max_x+", "+max_y+"}");
 			if (min_x <= px 
-				&& px < max_x 
+				&& px <= max_x 
 				&& min_y <= py 
-				&& py < max_y )
+				&& py <= max_y )
 			return true;
 		return false;
 	}
@@ -58,31 +58,18 @@ public class Region {
 				rminy = this.getMinY(), 
 				rmaxx = this.getMaxX(),
 				rmaxy = this.getMaxY(),
+			rHeight = rmaxy - rminy,
+			rWidth = rmaxx - rminx,
 			swrminX = sw.getMinX(),
 			swrminY = sw.getMinY(),
 			swrmaxX = sw.getMaxX(),
-			swrmaxY = sw.getMaxY();
+			swrmaxY = sw.getMaxY(),
+			swHeight = swrmaxY - swrminY,
+			swWidth = swrmaxX - swrminX;
 		
-		// part overlap
-		if ( (swrminX >= rminx && swrminX < rmaxx) ||  
-			 (swrminY >= rminy && swrminY < rmaxy) ||
-			 (swrmaxX >= rminx && swrmaxX < rmaxx) ||
-			 (swrmaxY >= rminy && swrmaxY < rmaxy) ) {
-			return true;
-		}
+		return !(swrminX > rmaxx ||  swrminY > rmaxy || rminx > swrmaxX || rminy > swrmaxY);
+}
 		
-		else if ( (rminx >= swrminX && rminx < swrmaxX) || 
-			 (rminy >= swrminY && rminy < swrmaxY) ||
-			 (rmaxx >= swrminX && rmaxx < swrmaxX) ||
-			 (rmaxy >= swrminY && rmaxy < swrmaxY) ) {
-			return true;
-		}
-		else 
-			return false;
-		
-		
-	}
-	
 	public void insert(Point p) {
 		data.add(p);
 	}
@@ -93,6 +80,17 @@ public class Region {
 				&& 	
 				p.getY() == data.get(i).getY()) {
 				return data.get(i).getId();
+			}
+		}
+		return -1;
+	}
+	
+	public int searchIndex(Point p) {
+		for (int i=0; i<data.size(); i++) {
+			if (p.getX() == data.get(i).getX()
+				&& 	
+				p.getY() == data.get(i).getY()) {
+				return i;
 			}
 		}
 		return -1;
@@ -122,9 +120,17 @@ public class Region {
 			max_y = _maxY;
 		}
 
+	public void removePoint(int index) {
+		data.remove(data.get(index));
+		currentCapacity--;
+	}
+	
 	public void clear() {
 		data.clear();
+		currentCapacity = 0;
 	}
+	
+	public boolean isEmpty() { if(data.size() == 0) return true; else return false; }
 	
 	public int getMinX() { return min_x; }
 	public int getMinY() { return min_y; }

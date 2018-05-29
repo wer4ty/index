@@ -25,10 +25,17 @@ public class Run {
 //		Point p5 = new Point(5, 6,4);
 		
 		RplusTree t = new RplusTree(3,3);
-		t.load("./resourse/do_data.dat");
+		System.out.println(t.load("./resourse/do_data.dat"));
 		//System.out.println();
 		//System.out.println("Point search: "+t.selectPoint("78 147 538 634 738"));
-		System.out.println("Region search: "+t.selectRegionOfPoints("2 15 2 39"));
+		
+		
+		//System.out.println(t.selectPoint("13 47"));
+		
+		t.deletePoint("13 47");
+		t.deletePoint("44 22");
+		
+		System.out.println("Region search: "+t.selectRegionOfPoints("2 10 3 150"));
 		
 		long stopTime = System.nanoTime();
 		double seconds = (double)(stopTime - startTime) / 1000000000.0;

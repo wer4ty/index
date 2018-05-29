@@ -36,18 +36,22 @@ public class Node {
 		return null;
 	}
 	
-	public List<Node> findInternalRegionForPoint(Region r) {
-		List<Node> tmp = new ArrayList<Node>();
-		for (int i=0; i<childs.size(); i++) {
-			if(childs.get(i).getRegion().RegionOverlaps(r)) tmp.add(childs.get(i).getChild());;
-		}
-		return tmp;
+//	public List<Node> findInternalRegionForPoint(Region r) {
+//		List<Node> tmp = new ArrayList<Node>();
+//		for (int i=0; i<childs.size(); i++) {
+//			if(childs.get(i).getRegion().RegionOverlaps(r)) tmp.add(childs.get(i).getChild());;
+//		}
+//		return tmp;
+//	}
+	
+	
+	public void removeRegion(Region r1) {
+		if(r1 != null)
+			r.remove(r1);
 	}
 	
 	public boolean isFull() { if(r.size() >= capacity)  return true;  else return false; }
 	
-	
-
 	public List<Region> getRegions() { return r; }
 	public List<NodeChild> getChilds() { return childs; }
 	public boolean isLeaf() {  if(childs.size() == 0) return true; else return false; }
