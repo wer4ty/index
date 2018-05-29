@@ -14,7 +14,7 @@ public class RplusTree {
 	public static int maxPointsInRegion;
 	public static int maxRegionsInNode;	
 	public int allPoints = 0;
-	public List<String> orig_points;
+	public static List<String> orig_points;
 	public String dataFile;
 	
 	// quadratic base min_x, min_y, max_x, max_y
@@ -145,8 +145,6 @@ public class RplusTree {
 							res.add(orig_points.get(pointsfromReg.get(j).getId()));
 						}
 					}
-					 
-				
 			}
 		}
 		if(res.size() > 0) return res.toString();
@@ -210,6 +208,7 @@ public class RplusTree {
 					while(!tmp_node.isFull() && regionsAdded < Nodes_num){
 						
 						Region tmp_inside_region = new Region(currentLevel.get(regionsAdded).expand(), RplusTree.maxRegionsInNode);
+						currentLevel.get(regionsAdded).setParent(tmp_node);
 						tmp_node.insert(tmp_inside_region);
 						tmp_node.insertChild(new NodeChild(tmp_inside_region, currentLevel.get(regionsAdded)));
 						regionsAdded++;
@@ -217,8 +216,6 @@ public class RplusTree {
 					
 						upperLevel.add(tmp_node);
 				}
-				
-				
 				
 				currentLevel = upperLevel;
 				upperLevel = new ArrayList<Node>();
@@ -245,6 +242,37 @@ public class RplusTree {
 		}
 	}
 	
+
+	private void reExpandTree(Node node, List<Region> res) {
+		if (node.isLeaf()) {
+			for(int i=0; i<node.getRegions().size(); i++) {
+				node.getRegions().get(i).resize();
+			}	
+		}
+		else {
+			List<NodeChild> nc = node.getChilds();
+			for(int i=0; i<nc.size(); i++) {
+				Node current_child = nc.get(i).getChild();
+				reExpandTree(current_child, res);
+				
+				// resize internal nodes
+				Region current_region = nc.get(i).getRegion();
+				int _minX =(int)Double.POSITIVE_INFINITY, _minY = (int)Double.POSITIVE_INFINITY, _maxX = 0, _maxY = 0;
+				List<Region> reg_of_child = current_child.getRegions();
+				for(int k=0; k<reg_of_child.size(); k++) {
+					Region inR = reg_of_child.get(i);
+					if (inR.getMinX() < _minX) _minX = inR.getMinX();
+					if (inR.getMinY() < _minY) _minY = inR.getMinY();
+					if (inR.getMaxX() > _maxX) _maxX = inR.getMaxX();
+					if (inR.getMaxY() > _maxY) _maxY = inR.getMaxY();
+				}
+				current_region.setMinX(_minX);
+				current_region.setMinY(_minY);
+				current_region.setMaxX(_maxX);
+				current_region.setMaxY(_maxY);
+			}
+		}
+	}
 	
 	public String deletePoint(String line) {
 		Point p = new Point(-1, line);
@@ -266,12 +294,31 @@ public class RplusTree {
 						tmp.removeRegion(goal);
 						
 						// if node is empty remove node and remove in parent nodechild and region
+							while(tmp != null ) {
+								if(tmp.isEmpty()) {
+									Node t = tmp;
+									tmp = tmp.getParent();
+									List<NodeChild> nc = tmp.getChilds();
+									for(int i=0; i<nc.size(); i++) {
+										if(nc.get(i).getChild() == t) {
+											nc.remove(i);
+											tmp.getRegions().remove(i);
+										}
+									}
+								}
+								else { break; }
+							}
 					}
+					reExpandTree(root, root.getRegions()); // change mbr parametrs
 					return "Succesfully deleted";
 				}
 			}
 		}
 		return "Not Found";
+	}
+	
+	public void printTree() {
+		System.out.println(root);
 	}
 	
 //	public void insert(Point p) {

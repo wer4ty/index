@@ -32,6 +32,7 @@ public class Point {
 	   }
  
 	
-	public String toString() { return "P [ID: "+id+": ("+x+", "+y+")]"; }
+	//public String toString() { return "\n\t\t\tP [ID: "+id+": ("+x+", "+y+")]"; }
+	public String toString() { return "\tP ["+RplusTree.orig_points.get(id)+"]"; }
 
 }

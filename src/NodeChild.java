@@ -28,5 +28,6 @@ public class NodeChild {
 		 return null;
 	}
 	
-	public String toString()  { return "\n\tNC: ("+region.min_x+", "+region.min_y+", "+region.max_x+", "+region.max_y+") \n{"+child+"}"; }
+	//public String toString()  { return "\tNC: ("+region.min_x+", "+region.min_y+", "+region.max_x+", "+region.max_y+"): \t"+child; }
+	public String toString()  { return "\t"+child; }
 }

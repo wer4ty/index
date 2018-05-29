@@ -8,7 +8,6 @@ import java.util.List;
  */
 public class Region {
 	List<Point> data = new ArrayList<Point>();
-	Node child;
 	int capacity;
 	int currentCapacity = 0;
 	
@@ -119,6 +118,14 @@ public class Region {
 			max_x = _maxX;
 			max_y = _maxY;
 		}
+	
+	public void resize(List<Integer> newSpace) {
+		min_x = newSpace.get(0);
+		min_y = newSpace.get(1);
+		max_x = newSpace.get(2);
+		max_y = newSpace.get(3);
+	}
+	
 
 	public void removePoint(int index) {
 		data.remove(data.get(index));
@@ -151,7 +158,8 @@ public class Region {
 		if(data.size() >= capacity)  return true;  else return false; 
 		}
 	
-	public String toString()  { return "\tR: ("+min_x+", "+min_y+", "+max_x+", "+max_y+")"; }
+	public String toString()  { return "\n\t\tR: ("+min_x+", "+min_y+", "+max_x+", "+max_y+") == {"+data+"}"; }
+	//public String toString()  { return "\n\t\tR: == {"+data+"\t}"; }
 	
 	public void displayPoints() {
 		System.out.println(this);

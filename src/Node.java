@@ -10,6 +10,7 @@ public class Node {
 	int capacity;
 	List<Region> r = new ArrayList<Region>();
 	List<NodeChild> childs = new ArrayList<NodeChild>();
+	Node parent;
 	
 	public Node(int c) {
 		capacity = c;
@@ -50,7 +51,14 @@ public class Node {
 			r.remove(r1);
 	}
 	
+	public void setParent(Node p) {
+		parent = p;
+	}
+	
+	public Node getParent() { return parent; }
+	
 	public boolean isFull() { if(r.size() >= capacity)  return true;  else return false; }
+	public boolean isEmpty() { if( (r.size() == 0) && childs.size() == 0) return true; else return false; }
 	
 	public List<Region> getRegions() { return r; }
 	public List<NodeChild> getChilds() { return childs; }
@@ -93,11 +101,10 @@ public class Node {
 			newSizes.add(_minY);
 			newSizes.add(_maxX);
 			newSizes.add(_maxY);
-			
-			
+						
 			return newSizes;
 	}
 	
-	public String toString()  { return "Node: "+r+"\n"+childs+"\n"; }
+	public String toString()  {   return "Node: "+r+"\n"+childs; }
 	
 }
