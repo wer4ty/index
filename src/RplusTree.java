@@ -28,7 +28,7 @@ public class RplusTree {
 		space.add((int)Double.POSITIVE_INFINITY);
 		space.add((int)Double.POSITIVE_INFINITY);
 
-		root = new Node(maxRegionsInNode, space);
+		root = new Node(maxRegionsInNode);
 		orig_points = new ArrayList<String>();
 	}
 	
@@ -321,35 +321,40 @@ public class RplusTree {
 		System.out.println(root);
 	}
 	
-//	public void insert(Point p) {
-//		// find leaf
-//		int px = p.getX(), py = p.getY();
-//		Node tmp = root;
-//		while (! tmp.isLeaf() ) {
-//			List<NodeChild> ch = tmp.getChilds();
-//			for(int i=0; i<ch.size(); i++) {
-//				NodeChild nc = ch.get(i);
-//				if (nc.getRegion().RegionOverlaps(p)) {
-//					tmp = nc.getChild();
-//					break;
-//				}
-//			}
-//		}
-//		// find good region in this node 
-//		Region reg_goal = tmp.findRegionForPoint(p);
-//		
-//		if (reg_goal != null && !(reg_goal.isFull()) ) {
-//				reg_goal.insert(p); 
-//		}
-//		
-//		// create new in current node
-//		else {
-//			if(!(tmp.isFull())) { 
-//		}
-//		
-//	}
-//		
-//	}
+	
+	private void findNodeForNewPoint(Node node, Point p, Node res) {
+		if (node.isLeaf()) {
+			List<Region> current_node_regions = node.getRegions();
+			for(int i=0; i<current_node_regions.size(); i++) {
+				if(current_node_regions.get(i).RegionOverlaps(p)) {
+					res = node;
+					return;
+				}
+					
+				else
+					break;
+			}
+		}
+		else {
+			List<NodeChild> nc = node.getChilds();
+			for(int i=0; i<nc.size(); i++) {
+				if(nc.get(i).getRegion().RegionOverlaps(p)) {
+					findNodeForNewPoint(nc.get(i).getChild(), p, res);
+				}
+			}
+		}
+	}
+
+	public void insert(String line) {
+		Node tmp = null;
+		RplusTree.orig_points.add(line);
+		Point p = new Point(++allPoints, line);
+		
+		findNodeForNewPoint(root,p, tmp);
+		System.out.println("Insert->>>>>>>>>>>>>>");
+		System.out.println(tmp);
+		
+	}
 	
 	
 	

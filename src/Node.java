@@ -15,14 +15,7 @@ public class Node {
 	public Node(int c) {
 		capacity = c;
 	}
-	
-	public Node(int c, List<Integer> space) {
-		if (c < 3) c = 3;
-		capacity = c;
-		r.add(new Region(space.get(0),space.get(1), space.get(0)/2, space.get(1)/2,  capacity));
-	}
-	
-	
+		
 	public Node findInternalRegionForPoint(Point p) {
 		for (int i=0; i<childs.size(); i++) {
 			if(childs.get(i).getRegion().RegionOverlaps(p)) return childs.get(i).getChild();
