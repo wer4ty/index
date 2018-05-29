@@ -1,14 +1,6 @@
-import java.awt.Desktop;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.Date;
-import java.io.File;
 /**
  * TODO Put here a description of what this class does.
  *
- * @author Server.
  *         Created May 1, 2018.
  */
 public class Run {

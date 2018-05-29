@@ -1,8 +1,6 @@
-
 /**
  * TODO Put here a description of what this class does.
  *
- * @author Server.
  *         Created May 23, 2018.
  */
 public class NodeChild {
