@@ -20,9 +20,7 @@ public class RplusTree {
 	// quadratic base min_x, min_y, max_x, max_y
 	List<Integer> space = new ArrayList<Integer>();
 	
-	public RplusTree(int n1, int n2) {
-		maxPointsInRegion = n1;
-		maxRegionsInNode = n2;		
+	public RplusTree(int n1, int n2) {	
 		space.add(0);
 		space.add(0);
 		space.add((int)Double.POSITIVE_INFINITY);

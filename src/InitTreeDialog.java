@@ -53,8 +53,6 @@ public class InitTreeDialog extends JDialog implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("Bild new Tree")) {
 				
-				System.out.println(RplusTree.maxPointsInRegion+"  "+RplusTree.maxRegionsInNode+" "+RplusTree.filePath);
-				
 				if (!MaxPointsInRegion.getText().isEmpty())
 					RplusTree.maxPointsInRegion = Integer.parseInt(MaxPointsInRegion.getText());
 				if (!MaxRegionInNode.getText().isEmpty())
@@ -64,9 +62,12 @@ public class InitTreeDialog extends JDialog implements ActionListener {
 				if (RplusTree.maxPointsInRegion <= 0 || RplusTree.maxRegionsInNode <= 0 || RplusTree.filePath == null) {
 					JOptionPane.showMessageDialog(null, "Init parametrs are wrong\nPlease try again set parametrs");
 				}
+				
+				
 				else {
+					System.out.println(RplusTree.maxPointsInRegion+"  "+RplusTree.maxRegionsInNode+" "+RplusTree.filePath);
 					long startTime = System.nanoTime();
-					Vizual.tree = new RplusTree(3,3);
+					Vizual.tree = new RplusTree(RplusTree.maxPointsInRegion,RplusTree.maxRegionsInNode);
 					Vizual.tree.load(RplusTree.filePath);
 					Vizual.tree.printTree();
 					long stopTime = System.nanoTime();
