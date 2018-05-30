@@ -10,11 +10,7 @@ public class Run {
 	public static void main(String[] args) throws Exception {
 		long startTime = System.nanoTime();
 		
-//		Point p1 = new Point(1, 3,3);
-//		Point p2 = new Point(2, 4,7);
-//		Point p3 = new Point(3, 7,2);
-//		Point p4 = new Point(4, 8,8);
-//		Point p5 = new Point(5, 6,4);
+
 		
 		RplusTree t = new RplusTree(3,3);
 		
