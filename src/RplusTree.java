@@ -10,8 +10,9 @@ import java.util.List;
  */
 public class RplusTree {
 	Node root;
-	public static int maxPointsInRegion;
-	public static int maxRegionsInNode;	
+	public static int maxPointsInRegion = 0;
+	public static int maxRegionsInNode  = 0;
+	public static String filePath = null;
 	public int allPoints = 0;
 	public static List<String> orig_points;
 	public String dataFile;
