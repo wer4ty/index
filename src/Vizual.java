@@ -21,8 +21,10 @@ public class Vizual extends JFrame implements ActionListener {
 		// main panel
 		main = new JPanel();
 		// absolute position of inside elemenths
-		//main.setOpaque(true);
-		//main.setLayout(null);
+		main.setLayout(new GridLayout(1,1,10,10) );
+		main.setBounds(0, 0, 1000, 800);
+		main.setBackground(Color.WHITE);
+		
 		
 		try {
 		
@@ -32,7 +34,8 @@ public class Vizual extends JFrame implements ActionListener {
 		       editorScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		       File file = new File("visual/index.html");
 		       editorpane.setPage(file.toURI().toURL());
-		       editorpane.setEditable(true);
+		       editorpane.setEditable(false);
+		       editorpane.setBounds(0, 0, 1000, 800);
 			
 			
 			main.add(editorpane);
