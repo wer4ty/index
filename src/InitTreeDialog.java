@@ -23,8 +23,13 @@ public class InitTreeDialog extends JDialog implements ActionListener {
 				
 			loadFiletrigger = new JButton("Load File");
 			MaxPointsInRegion = new JTextField(20);
+			MaxPointsInRegion.setText(String.valueOf(RplusTree.maxPointsInRegion));
 			MaxRegionInNode = new JTextField(20);
-			fileP = new JLabel("File Path:");
+			MaxRegionInNode.setText(String.valueOf(RplusTree.maxRegionsInNode));
+			if (RplusTree.filePath != null)
+				fileP = new JLabel("File Path: "+RplusTree.filePath);
+			else
+				fileP = new JLabel("File Path:");
 			
 			JButton b1 = new JButton("Bild new Tree");
 			b1.addActionListener(this);

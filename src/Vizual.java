@@ -2,9 +2,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;  
+
+
 
 public class Vizual extends JFrame implements ActionListener {
 	private JPanel main;
@@ -17,14 +21,34 @@ public class Vizual extends JFrame implements ActionListener {
 		// main panel
 		main = new JPanel();
 		// absolute position of inside elemenths
-		main.setOpaque(true);
-		main.setLayout(null);
+		//main.setOpaque(true);
+		//main.setLayout(null);
 		
+		try {
+		
+			
+			 JEditorPane editorpane= new JEditorPane();
+			 JScrollPane editorScrollPane = new JScrollPane(editorpane);
+		       editorScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		       File file = new File("visual/index.html");
+		       editorpane.setPage(file.toURI().toURL());
+		       editorpane.setEditable(true);
+			
+			
+			main.add(editorpane);
+			
+			
+		} catch (IOException exception) {
+			// TODO Auto-generated catch-block stub.
+			exception.printStackTrace();
+		}
 		
 		// menu
 		JMenuBar menubar = new JMenuBar();
 			JMenu file = new JMenu("Main");
+				JMenuItem prTr = new JMenuItem("Print Tree");
 				JMenuItem exit_m = new JMenuItem("Exit");
+				file.add(prTr);
 				file.add(exit_m);
 			menubar.add(file);
 			
@@ -53,6 +77,7 @@ public class Vizual extends JFrame implements ActionListener {
 		dp.addActionListener(this);
 		exit_m.addActionListener(this);
 		help_m.addActionListener(this);
+		prTr.addActionListener(this);
 		
 		
 		// submenu panel
@@ -66,7 +91,7 @@ public class Vizual extends JFrame implements ActionListener {
 		Btn[2] = new JButton("Select Range");
 		Btn[3] = new JButton("Delete Point");
 		Btn[4] = new JButton("Insert Point");
-		Btn[5] = new JButton("Query Info");
+		Btn[5] = new JButton("Print Tree");
 		Btn[6] = new JButton("Help");
 		Btn[7] = new JButton("Exit");
 		
@@ -83,6 +108,7 @@ public class Vizual extends JFrame implements ActionListener {
 		Btn[4].addActionListener(this);
 		Btn[5].addActionListener(this);
 		Btn[6].addActionListener(this);
+		Btn[7].addActionListener(this);
 		
 		// set into frame two panels
 		this.getContentPane().add(BorderLayout.CENTER, main);
@@ -119,23 +145,32 @@ public class Vizual extends JFrame implements ActionListener {
 			}
 			
 			else if (e.getActionCommand().equals("Select Point")) {
-				//sleep();
+				SelectDialog dialog = new SelectDialog(this, "Select Point", true);
+				dialog.setVisible(true);
+				dialog.requestFocus();
 			}
 			
 			else if (e.getActionCommand().equals("Select Range")) {
-				//wake();
+				SelectDialog dialog = new SelectDialog(this, "Select Range", false);
+				dialog.setVisible(true);
+				dialog.requestFocus();
 			}
 			
 			else if (e.getActionCommand().equals("Delete Point")) {
-				//clearAll();
+				DeleteDialog dialog = new DeleteDialog(this, "Delete Point");
+				dialog.setVisible(true);
+				dialog.requestFocus();
 			}
 			
 			else if (e.getActionCommand().equals("Insert Point")) {
 				//FoodDialog();
 			}
 			
-			else if (e.getActionCommand().equals("Info")) {
-				//infoTable();
+			else if (e.getActionCommand().equals("Print Tree")) {
+				if (Vizual.tree != null)
+					Vizual.tree.printTree();
+				else
+					JOptionPane.showMessageDialog(null, "Tree is not initialized. Before use it, please init tree");
 			}
 			
 			else if (e.getActionCommand().equals("Help")) { 
