@@ -18,6 +18,7 @@ public class Point {
 	public int getId() { return id; }
 	
 	public Point(int _id, String line) {
+		line = line.trim();
 		String[] s = line.split("\\s+");
 		id = _id;
 		x = s.length;		

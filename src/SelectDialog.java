@@ -30,11 +30,12 @@ public class SelectDialog extends JDialog implements ActionListener {
 			if (pointSearch) 
 				main.add(new JLabel("<html>Type select point<br> (only int numbers supports <br>with only space seperator)<br><i>Exemple: <font color='red'><b>85 28</b></font></i> </html>"));
 			else
-				main.add(new JLabel("<html>Type select region<br> (format: [minX minY maxX maxY]<br> only integers space separator)<br><i>Exemple: <font color='red'><b>10 5 100 200</b></font></i></html>"));
+				main.add(new JLabel("<html>Type select region (between two points) <br>Format: [point1, point2]<br><i>Exemple: <font color='red'><b>10 5, 100 200</b></font></i>"
+						+ "<br><i>Exemple2: <font color='red'><b>34 85 18 49, 100 200 315 280</b></font></i></html>"));
 			main.add(user_select);
 			main.add(result);
 				
-			this.setSize(250, 400);
+			this.setSize(350, 400);
 			this.getContentPane().add(BorderLayout.CENTER, main);
 			this.getContentPane().add(BorderLayout.SOUTH, b1);
 			

@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 /**
  * TODO Put here a description of what this class does.
@@ -120,17 +121,14 @@ public class RplusTree {
 	
 	public String selectRegionOfPoints(String line) {
 		List<String> res = new ArrayList<String>();
-		
+		Point pmin, pmax;
 		// bild search window
-		String[] s = line.split("\\s+");
-		if (s.length != 4) { return "Wrong format List have to be [minX, minY, maxX, maxY]"; }
-		else {
-			List<Integer> search_bounds = new ArrayList<Integer>();
-			for (int i=0; i < s.length; i++) {
-				search_bounds.add(Integer.parseInt(s[i]));
-			}
+		List<String> pointList = Arrays.asList(line.split(","));
+		pmin = new Point(-1, pointList.get(0));
+		pmax = new Point(-1, pointList.get(1));
 			
-			Region search_window = new Region(search_bounds, RplusTree.maxPointsInRegion);
+			
+			Region search_window = new Region(pmin.getX(), pmin.getY(), pmax.getX(), pmax.getY(), RplusTree.maxPointsInRegion);
 			List<Region> leafs_regions = new ArrayList<Region>();
 			Node tmp = root;
 					
@@ -144,7 +142,6 @@ public class RplusTree {
 						}
 					}
 			}
-		}
 		if(res.size() > 0) return res.toString();
 		else return "Not Found";
 	}
