@@ -79,16 +79,16 @@ public class RplusTree {
 	
 
 	
-	public String selectPoint(String line) {
+	public String selectPoint(String line, List<Region> searchWay) {
 		Point p = new Point(-1, line);
 		Node tmp = root;
 		if (tmp != null) {
 			while (!tmp.isLeaf()) {
-				Node t = tmp.findInternalRegionForPoint(p);
+				Node t = tmp.findInternalRegionForPoint(p, searchWay);
 				if (t != null) tmp = t;
 				else return "Not Found";
 			}
-			Region goal = tmp.findLeafRegionForPoint(p);
+			Region goal = tmp.findLeafRegionForPoint(p, searchWay);
 			if (goal != null) {
 				int rs = goal.search(p);
 				if(rs != -1) {
@@ -99,11 +99,12 @@ public class RplusTree {
 		return "Not Found";
 	}
 	
-	private void filterDownToleafs(Node node, List<Region> res, Region sw) {
+	private void filterDownToleafs(Node node, List<Region> res, Region sw, List<Region> searchWay) {
 		if (node.isLeaf()) {
 			List<Region> rc = node.getRegions();
 			for(int i=0; i<rc.size(); i++) {
 				if(rc.get(i).RegionOverlaps(sw)) {
+					searchWay.add(rc.get(i));
 					res.add(rc.get(i)); 
 				}
 			}
@@ -113,13 +114,14 @@ public class RplusTree {
 			List<NodeChild> nc = node.getChilds();
 			for(int i=0; i<nc.size(); i++) {
 				if(nc.get(i).getRegion().RegionOverlaps(sw)) {
-					filterDownToleafs(nc.get(i).getChild(), res, sw);
+					searchWay.add(nc.get(i).getRegion());
+					filterDownToleafs(nc.get(i).getChild(), res, sw, searchWay);
 				}
 			}
 		}
 	}
 	
-	public String selectRegionOfPoints(String line) {
+	public String selectRegionOfPoints(String line, List<Region> searchWay) {
 		List<String> res = new ArrayList<String>();
 		Point pmin, pmax;
 		// bild search window
@@ -132,7 +134,7 @@ public class RplusTree {
 			List<Region> leafs_regions = new ArrayList<Region>();
 			Node tmp = root;
 					
-			filterDownToleafs(tmp,leafs_regions, search_window);
+			filterDownToleafs(tmp,leafs_regions, search_window, searchWay);
 			
 			for(int i=0; i<leafs_regions.size(); i++) {
 				List<Point> pointsfromReg = leafs_regions.get(i).getPoints();
@@ -142,6 +144,8 @@ public class RplusTree {
 						}
 					}
 			}
+			
+		
 		if(res.size() > 0) return res.toString();
 		else return "Not Found";
 	}
@@ -272,13 +276,14 @@ public class RplusTree {
 	public String deletePoint(String line) {
 		Point p = new Point(-1, line);
 		Node tmp = root;
+		List<Region> r = new ArrayList<Region>();
 		if (tmp != null) {
 			while (!tmp.isLeaf()) {
-				Node t = tmp.findInternalRegionForPoint(p);
+				Node t = tmp.findInternalRegionForPoint(p, r);
 				if (t != null) tmp = t;
 				else return "Not Found";
 			}
-			Region goal = tmp.findLeafRegionForPoint(p);
+			Region goal = tmp.findLeafRegionForPoint(p, r);
 			if (goal != null) {
 				int rs = goal.searchIndex(p);
 				if(rs != -1) {

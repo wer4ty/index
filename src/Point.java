@@ -30,6 +30,15 @@ public class Point {
 	   }
  
 	
+	public boolean equals(Point obj) {
+	    if (obj == null) {
+	        return false;
+	    }
+	    if(this.getX() == obj.getX() && this.getY() == obj.getY())
+	    	return true;
+	    return false;
+	}
+	
 	//public String toString() { return "\n\t\t\tP [ID: "+id+": ("+x+", "+y+")]"; }
 	public String toString() { return "\tP ["+RplusTree.orig_points.get(id)+"]"; }
 

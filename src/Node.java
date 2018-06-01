@@ -15,16 +15,22 @@ public class Node {
 		capacity = c;
 	}
 		
-	public Node findInternalRegionForPoint(Point p) {
+	public Node findInternalRegionForPoint(Point p, List<Region> way) {
 		for (int i=0; i<childs.size(); i++) {
-			if(childs.get(i).getRegion().RegionOverlaps(p)) return childs.get(i).getChild();
+			if(childs.get(i).getRegion().RegionOverlaps(p)) {
+				way.add(childs.get(i).getRegion());
+				return childs.get(i).getChild();
+			}
 		}
 		return null;
 	}
 	
-	public Region findLeafRegionForPoint(Point p) {
+	public Region findLeafRegionForPoint(Point p, List<Region> way) {
 		for (int i=0; i<r.size(); i++) {
-			if(r.get(i).RegionOverlaps(p)) return r.get(i);
+			if(r.get(i).RegionOverlaps(p)) {
+				way.add(r.get(i));
+				return r.get(i);
+			}
 		}
 		return null;
 	}

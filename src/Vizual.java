@@ -184,7 +184,7 @@ public class Vizual extends JFrame implements ActionListener {
 				RplusTree.filePath = "resourse/do_data.dat";
 				Vizual.tree = new RplusTree(RplusTree.maxPointsInRegion,RplusTree.maxRegionsInNode);
 				Vizual.tree.load(RplusTree.filePath);
-				DrawTree();
+				DrawTree(null, null);
 			}
 			
 			else if (e.getActionCommand().equals("Help")) { 
@@ -200,17 +200,44 @@ public class Vizual extends JFrame implements ActionListener {
 			    return array[level];
 		}
 		
-		public void recursiveVisualGenerator(Node node, StringBuilder res, int l) {
+		public void recursiveVisualGenerator(Node node, StringBuilder res, int l, List<Region> path, Point search_point) {
 			if (node.isLeaf()) {
 				List<Region> current_node_regions = node.getRegions();
 				res.append("<ul>");
+				
+				boolean partOfPath = false;
 				for(int i=0; i<current_node_regions.size(); i++) {
-					res.append("<li style='border: 1px dashed black'><u>"+current_node_regions.get(i).toString()+"</u>");
 					
+					if(path != null) {
+						for (int k=0; k<path.size(); k++) {
+							if(current_node_regions.get(i) == path.get(k)) {
+								partOfPath = true;
+								break;
+							}
+							else 
+								partOfPath = false;
+						}
+					}
+					
+					
+					String toAppend;
+					if(path != null && partOfPath)
+						toAppend = "<li style='border: 1px dashed black'><u><h3 class='highlight'>"+current_node_regions.get(i).toString()+"</h3></u>";
+					else
+						toAppend = "<li style='border: 1px dashed black'><u>"+current_node_regions.get(i).toString()+"</u>";
+					
+					res.append(toAppend);
 					res.append("<div class='dataPoint'><i><b>{ ");
 					List<Point> dataPoints = current_node_regions.get(i).getPoints();
 					for (int j=0; j<dataPoints.size(); j++) {
-						res.append(dataPoints.get(j).toString()+"  ");
+						
+						String pointAppend = dataPoints.get(j).toString()+"  ";
+						if (search_point != null) {
+							if (search_point.equals(dataPoints.get(j)))
+								pointAppend = "<span class='highlight'>"+dataPoints.get(j).toString()+"</span>  ";
+						}
+						
+						res.append(pointAppend);
 					}
 					res.append(" }</i></b></div>");
 					
@@ -221,10 +248,31 @@ public class Vizual extends JFrame implements ActionListener {
 			else {
 				List<NodeChild> nc = node.getChilds();
 				String color = randColor(l);
+				boolean partOfPath = false;
 				for(int i=0; i<nc.size(); i++) {
+					
+					if(path != null) {
+						for (int k=0; k<path.size(); k++) {
+							if(nc.get(i).getRegion() == path.get(k)) {
+								partOfPath = true;
+								
+								break;
+							}
+							else 
+								partOfPath = false;
+						}
+					}
+					
+					String toAppend;
+					if(path != null && partOfPath)
+						toAppend = "<li style='border: 1px solid "+color+"'><u><h3 class='highlight'>"+nc.get(i).getRegion().toString()+"</h3></u>";
+					else
+						toAppend = "<li style='border: 1px solid "+color+"'><u>"+nc.get(i).getRegion().toString()+"</u>";
+					 
+					
 					res.append("<ul>");
-					res.append("<li style='border: 1px solid "+color+"'><u>"+nc.get(i).getRegion().toString()+"</u>");
-					recursiveVisualGenerator(nc.get(i).getChild(), res, ++l);
+					res.append(toAppend);
+					recursiveVisualGenerator(nc.get(i).getChild(), res, ++l, path, search_point);
 					res.append("</li>");
 					res.append("</ul>");
 				}
@@ -232,8 +280,8 @@ public class Vizual extends JFrame implements ActionListener {
 		}	
 		
 	
-	public void DrawTree() {
-		String top = "<!DOCTYPE html><html><head><title>R+Tree index</title><style>ul, li {list-style-type: none;  margin: 0; padding: 0; }ul { padding-left: 20px; border: 0px solid #333; display: block; margin: 5px;  }li { padding-left: 20px; padding-top: 5px; margin-top:5px; display: block; margin-top: 10px; font-weight: bold;} .highlight { background-color: yellow; } .dataPoint {padding-left: 20px; font-size: 10px; font-color: gray; }</style></head><body><img  src='logo.png'>";	
+	public void DrawTree(List<Region> path, Point p) {
+		String top = "<!DOCTYPE html><html><head><title>R+Tree index</title><style>ul, li {list-style-type: none;  margin: 0; padding: 0; }ul { padding-left: 20px; border: 0px solid #333; display: block; margin: 5px;  }li { padding-left: 20px; padding-top: 5px; margin-top:5px; display: block; margin-top: 10px; font-weight: bold;} .highlight { background-color: yellow; display:inline; } .dataPoint {padding-left: 20px; font-size: 10px; font-color: gray; }</style></head><body><img  src='logo.png'>";	
 		String bottom = "</body></html>";
 		
 		StringBuilder tree_representation = new StringBuilder();
@@ -244,7 +292,7 @@ public class Vizual extends JFrame implements ActionListener {
 		}
 		else {
 			Node tmp = Vizual.tree.get();
-			recursiveVisualGenerator(tmp, tree_representation, 0);
+			recursiveVisualGenerator(tmp, tree_representation, 0, path, p);
 			
 			 
 			try (BufferedWriter bw = new BufferedWriter(new FileWriter(Vizual.filePath))) {

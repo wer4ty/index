@@ -52,7 +52,7 @@ public class DeleteDialog extends JDialog implements ActionListener {
 						String res = Vizual.tree.deletePoint(user_select.getText());
 						result.setText(res);
 						System.out.println("Delete point result: "+res);
-						frame.DrawTree();
+						frame.DrawTree(null, null);
 				}
 				
 			}

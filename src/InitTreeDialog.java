@@ -74,7 +74,7 @@ public class InitTreeDialog extends JDialog implements ActionListener {
 					long startTime = System.nanoTime();
 					Vizual.tree = new RplusTree(RplusTree.maxPointsInRegion,RplusTree.maxRegionsInNode);
 					Vizual.tree.load(RplusTree.filePath);
-					frame.DrawTree();
+					frame.DrawTree(null, null);
 					long stopTime = System.nanoTime();
 					double seconds = (double)(stopTime - startTime) / 1000000000.0;
 					System.out.printf("Load time: %.2f seconds\n\n", seconds);

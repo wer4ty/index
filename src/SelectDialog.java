@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
@@ -10,10 +11,10 @@ import javax.swing.filechooser.FileSystemView;
 public class SelectDialog extends JDialog implements ActionListener {
 	private JTextField  user_select;
 	private boolean pointSearch;
-	private JFrame frame;
+	private Vizual frame;
 	private JLabel result;
 	
-		public SelectDialog(JFrame _frame, String title, boolean point) {
+		public SelectDialog(Vizual _frame, String title, boolean point) {
 			frame =  _frame;
 			this.setTitle(title);
 			JPanel main=new JPanel();
@@ -53,14 +54,22 @@ public class SelectDialog extends JDialog implements ActionListener {
 					JOptionPane.showMessageDialog(null, "Tree is not initialized. Before use it, please init tree");
 				}
 				else {
+					ArrayList<Region> way = new ArrayList<Region>();
 					if(pointSearch) {
-						String res = Vizual.tree.selectPoint(user_select.getText());
+						String res = Vizual.tree.selectPoint(user_select.getText(), way);
+						
+						if (res.trim().equals(user_select.getText().trim())) {
+							String[] s = res.split("\\s+");
+							frame.DrawTree(way, new Point(-1, Integer.parseInt(s[0]), Integer.parseInt(s[1])));
+						}
 						System.out.println("Point search result: "+res);
 					}
 					else {
-						String res = Vizual.tree.selectRegionOfPoints(user_select.getText());
+						String res = Vizual.tree.selectRegionOfPoints(user_select.getText(), way);
+						frame.DrawTree(way, null);
 						System.out.println("Region search result: "+res);
 					}
+					
 				}				
 			}
 		}
