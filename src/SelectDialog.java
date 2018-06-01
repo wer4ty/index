@@ -59,8 +59,7 @@ public class SelectDialog extends JDialog implements ActionListener {
 						String res = Vizual.tree.selectPoint(user_select.getText(), way);
 						
 						if (res.trim().equals(user_select.getText().trim())) {
-							String[] s = res.split("\\s+");
-							frame.DrawTree(way, new Point(-1, Integer.parseInt(s[0]), Integer.parseInt(s[1])));
+							frame.DrawTree(way, new Point(-1, res));
 						}
 						System.out.println("Point search result: "+res);
 					}
