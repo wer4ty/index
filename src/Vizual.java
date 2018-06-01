@@ -1,22 +1,32 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;  
+import javax.swing.text.Document;
 
 
 
 public class Vizual extends JFrame implements ActionListener {
 	private JPanel main;
+	private JEditorPane editorpane;
+	public static  String filePath = "visual/index.html";
+	public static  String emptyPath = "visual/empty.html";
 	public static RplusTree tree;
+	
 	
 	public Vizual() {
 		this.setTitle("Visualization R+Tree Index");
-		
 		
 		// main panel
 		main = new JPanel();
@@ -29,16 +39,15 @@ public class Vizual extends JFrame implements ActionListener {
 		try {
 		
 			
-			 JEditorPane editorpane= new JEditorPane();
+			 editorpane= new JEditorPane();
 			 JScrollPane editorScrollPane = new JScrollPane(editorpane);
 		       editorScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		       File file = new File("visual/index.html");
-		       editorpane.setPage(file.toURI().toURL());
+		       editorpane.setPage(new File(filePath).toURI().toURL());
 		       editorpane.setEditable(false);
-		       editorpane.setBounds(0, 0, 1000, 800);
+		       editorScrollPane.setBounds(0, 0, 1000, 800);
 			
 			
-			main.add(editorpane);
+			main.add(editorScrollPane);
 			
 			
 		} catch (IOException exception) {
@@ -49,7 +58,7 @@ public class Vizual extends JFrame implements ActionListener {
 		// menu
 		JMenuBar menubar = new JMenuBar();
 			JMenu file = new JMenu("Main");
-				JMenuItem prTr = new JMenuItem("Print Tree");
+				JMenuItem prTr = new JMenuItem("Random Tree");
 				JMenuItem exit_m = new JMenuItem("Exit");
 				file.add(prTr);
 				file.add(exit_m);
@@ -94,7 +103,7 @@ public class Vizual extends JFrame implements ActionListener {
 		Btn[2] = new JButton("Select Range");
 		Btn[3] = new JButton("Delete Point");
 		Btn[4] = new JButton("Insert Point");
-		Btn[5] = new JButton("Print Tree");
+		Btn[5] = new JButton("Random Tree");
 		Btn[6] = new JButton("Help");
 		Btn[7] = new JButton("Exit");
 		
@@ -126,7 +135,7 @@ public class Vizual extends JFrame implements ActionListener {
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 				
 		// resize false and make visible
-		setResizable(false);
+		setResizable(true);
 		this.setVisible(true);
 	}
 	
@@ -169,11 +178,14 @@ public class Vizual extends JFrame implements ActionListener {
 				//FoodDialog();
 			}
 			
-			else if (e.getActionCommand().equals("Print Tree")) {
-				if (Vizual.tree != null)
-					Vizual.tree.printTree();
-				else
-					JOptionPane.showMessageDialog(null, "Tree is not initialized. Before use it, please init tree");
+			else if (e.getActionCommand().equals("Random Tree")) {
+				RplusTree.maxPointsInRegion  = ThreadLocalRandom.current().nextInt(2, 6 + 1);
+				RplusTree.maxRegionsInNode = ThreadLocalRandom.current().nextInt(2, 6 + 1);
+				RplusTree.filePath = "resourse/do_data.dat";
+				Vizual.tree = new RplusTree(RplusTree.maxPointsInRegion,RplusTree.maxRegionsInNode);
+				Vizual.tree.load(RplusTree.filePath);
+				Vizual.tree.printTree();
+				DrawTree();
 			}
 			
 			else if (e.getActionCommand().equals("Help")) { 
@@ -181,6 +193,89 @@ public class Vizual extends JFrame implements ActionListener {
 			}
 		}
 	
+		public String randColor(int level) {
+			String[] array = {"red", "orange", "green", "blue",
+					 "maroon", "lime", "navy", "black", "aqua",
+					"purple", "olive" };
+			if (level > array.length) level = level % array.length;
+			    return array[level];
+		}
+		
+		public void recursiveVisualGenerator(Node node, StringBuilder res, int l) {
+			if (node.isLeaf()) {
+				List<Region> current_node_regions = node.getRegions();
+				res.append("<ul>");
+				for(int i=0; i<current_node_regions.size(); i++) {
+					res.append("<li style='border: 1px dashed black'>"+current_node_regions.get(i).toString()+"</li>");
+				}
+				res.append("</ul>");
+			}
+			else {
+				List<NodeChild> nc = node.getChilds();
+				String color = randColor(l);
+				for(int i=0; i<nc.size(); i++) {
+					res.append("<ul>");
+					res.append("<li style='border: 1px solid "+color+"'>"+nc.get(i).getRegion().toString());
+					recursiveVisualGenerator(nc.get(i).getChild(), res, ++l);
+					res.append("</li>");
+					res.append("</ul>");
+				}
+			}
+		}	
+		
 	
+	public void DrawTree() {
+		String top = "<!DOCTYPE html><html><head><title>R+Tree index</title><style>ul, li {list-style-type: none;  margin: 0; padding: 0; }ul { padding-left: 20px; border: 0px solid #333; display: block; margin: 5px;  }li { padding-left: 20px; padding-top: 5px; margin-top:5px; display: block; margin-top: 10px; font-weight: bold;} .highlight { background-color: yellow; }</style></head><body><img  src='logo.png'>";	
+		String bottom = "</body></html>";
+		
+		StringBuilder tree_representation = new StringBuilder();
+		
+		
+		if (Vizual.tree == null) {
+			JOptionPane.showMessageDialog(null, "Tree is not initialized. Before use it, please init tree");
+		}
+		else {
+			Node tmp = Vizual.tree.get();
+			recursiveVisualGenerator(tmp, tree_representation, 0);
+			
+			 
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter(Vizual.filePath))) {
+				bw.write(top);
+				bw.write(tree_representation.toString());
+				bw.write(bottom);
+				
+				// no need to close it.
+				//bw.close();
+
+				System.out.println("Done");
+//				editorpane.setPage(new File(emptyPath).toURI().toURL());
+//				//SwingUtilities.updateComponentTreeUI(this);
+//				main.revalidate();
+//				main.repaint();
+//				
+//				
+//				editorpane.setPage(new File(filePath).toURI().toURL());
+//				//SwingUtilities.updateComponentTreeUI(this);
+//				main.revalidate();
+//				main.repaint();
+				
+				   Document doc = editorpane.getDocument();
+				   doc.putProperty(Document.StreamDescriptionProperty, null);
+				   editorpane.setPage(new File(filePath).toURI().toURL());
+				   main.revalidate();
+				   main.repaint();
+				   SwingUtilities.updateComponentTreeUI(this);
+				
+				
+				
+			} catch (IOException e) {
+
+				e.printStackTrace();
+
+			}
+			
+			
+		}
+	}
 	
 }

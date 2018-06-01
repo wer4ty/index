@@ -157,7 +157,7 @@ public class Region {
 		if(data.size() >= capacity)  return true;  else return false; 
 		}
 	
-	public String toString()  { return "\n\t\tR: ("+min_x+", "+min_y+", "+max_x+", "+max_y+") == {"+data+"}"; }
+	public String toString()  { return "\n\t\tR: ("+min_x+", "+min_y+", "+max_x+", "+max_y+")"; }
 	//public String toString()  { return "\n\t\tR: == {"+data+"\t}"; }
 	
 	public void displayPoints() {
