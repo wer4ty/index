@@ -10,11 +10,11 @@ import javafx.stage.FileChooser;
 public class InitTreeDialog extends JDialog implements ActionListener {
 	private JTextField  MaxPointsInRegion,MaxRegionInNode;
 	private JFileChooser fileChooser;
-	private JFrame frame;
+	private Vizual frame;
 	private JButton loadFiletrigger;
 	private JLabel fileP;
 	
-		public InitTreeDialog(JFrame _frame, String title) {
+		public InitTreeDialog(Vizual _frame, String title) {
 			frame =  _frame;
 			this.setTitle(title);
 			JPanel main=new JPanel();
@@ -74,7 +74,7 @@ public class InitTreeDialog extends JDialog implements ActionListener {
 					long startTime = System.nanoTime();
 					Vizual.tree = new RplusTree(RplusTree.maxPointsInRegion,RplusTree.maxRegionsInNode);
 					Vizual.tree.load(RplusTree.filePath);
-					Vizual.tree.printTree();
+					frame.DrawTree();
 					long stopTime = System.nanoTime();
 					double seconds = (double)(stopTime - startTime) / 1000000000.0;
 					System.out.printf("Load time: %.2f seconds\n\n", seconds);

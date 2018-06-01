@@ -33,11 +33,10 @@ public class SelectDialog extends JDialog implements ActionListener {
 				main.add(new JLabel("<html>Type select region<br> (format: [minX minY maxX maxY]<br> only integers space separator)<br><i>Exemple: <font color='red'><b>10 5 100 200</b></font></i></html>"));
 			main.add(user_select);
 			main.add(result);
-			main.add(b1);
 				
 			this.setSize(250, 400);
 			this.getContentPane().add(BorderLayout.CENTER, main);
-			//this.getContentPane().add(BorderLayout.SOUTH, b1);
+			this.getContentPane().add(BorderLayout.SOUTH, b1);
 			
 			Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 			this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);

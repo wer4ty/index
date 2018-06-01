@@ -42,7 +42,7 @@ public class Vizual extends JFrame implements ActionListener {
 			 editorpane= new JEditorPane();
 			 JScrollPane editorScrollPane = new JScrollPane(editorpane);
 		       editorScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		       editorpane.setPage(new File(filePath).toURI().toURL());
+		       editorpane.setPage(new File(emptyPath).toURI().toURL());
 		       editorpane.setEditable(false);
 		       editorScrollPane.setBounds(0, 0, 1000, 800);
 			
@@ -184,7 +184,6 @@ public class Vizual extends JFrame implements ActionListener {
 				RplusTree.filePath = "resourse/do_data.dat";
 				Vizual.tree = new RplusTree(RplusTree.maxPointsInRegion,RplusTree.maxRegionsInNode);
 				Vizual.tree.load(RplusTree.filePath);
-				Vizual.tree.printTree();
 				DrawTree();
 			}
 			
@@ -206,7 +205,16 @@ public class Vizual extends JFrame implements ActionListener {
 				List<Region> current_node_regions = node.getRegions();
 				res.append("<ul>");
 				for(int i=0; i<current_node_regions.size(); i++) {
-					res.append("<li style='border: 1px dashed black'>"+current_node_regions.get(i).toString()+"</li>");
+					res.append("<li style='border: 1px dashed black'><u>"+current_node_regions.get(i).toString()+"</u>");
+					
+					res.append("<div class='dataPoint'><i><b>{ ");
+					List<Point> dataPoints = current_node_regions.get(i).getPoints();
+					for (int j=0; j<dataPoints.size(); j++) {
+						res.append(dataPoints.get(j).toString()+"  ");
+					}
+					res.append(" }</i></b></div>");
+					
+					res.append("</li>");
 				}
 				res.append("</ul>");
 			}
@@ -215,7 +223,7 @@ public class Vizual extends JFrame implements ActionListener {
 				String color = randColor(l);
 				for(int i=0; i<nc.size(); i++) {
 					res.append("<ul>");
-					res.append("<li style='border: 1px solid "+color+"'>"+nc.get(i).getRegion().toString());
+					res.append("<li style='border: 1px solid "+color+"'><u>"+nc.get(i).getRegion().toString()+"</u>");
 					recursiveVisualGenerator(nc.get(i).getChild(), res, ++l);
 					res.append("</li>");
 					res.append("</ul>");
@@ -225,7 +233,7 @@ public class Vizual extends JFrame implements ActionListener {
 		
 	
 	public void DrawTree() {
-		String top = "<!DOCTYPE html><html><head><title>R+Tree index</title><style>ul, li {list-style-type: none;  margin: 0; padding: 0; }ul { padding-left: 20px; border: 0px solid #333; display: block; margin: 5px;  }li { padding-left: 20px; padding-top: 5px; margin-top:5px; display: block; margin-top: 10px; font-weight: bold;} .highlight { background-color: yellow; }</style></head><body><img  src='logo.png'>";	
+		String top = "<!DOCTYPE html><html><head><title>R+Tree index</title><style>ul, li {list-style-type: none;  margin: 0; padding: 0; }ul { padding-left: 20px; border: 0px solid #333; display: block; margin: 5px;  }li { padding-left: 20px; padding-top: 5px; margin-top:5px; display: block; margin-top: 10px; font-weight: bold;} .highlight { background-color: yellow; } .dataPoint {padding-left: 20px; font-size: 10px; font-color: gray; }</style></head><body><img  src='logo.png'>";	
 		String bottom = "</body></html>";
 		
 		StringBuilder tree_representation = new StringBuilder();
@@ -244,30 +252,15 @@ public class Vizual extends JFrame implements ActionListener {
 				bw.write(tree_representation.toString());
 				bw.write(bottom);
 				
-				// no need to close it.
 				//bw.close();
 
 				System.out.println("Done");
-//				editorpane.setPage(new File(emptyPath).toURI().toURL());
-//				//SwingUtilities.updateComponentTreeUI(this);
-//				main.revalidate();
-//				main.repaint();
-//				
-//				
-//				editorpane.setPage(new File(filePath).toURI().toURL());
-//				//SwingUtilities.updateComponentTreeUI(this);
-//				main.revalidate();
-//				main.repaint();
 				
 				   Document doc = editorpane.getDocument();
 				   doc.putProperty(Document.StreamDescriptionProperty, null);
 				   editorpane.setPage(new File(filePath).toURI().toURL());
-				   main.revalidate();
-				   main.repaint();
-				   SwingUtilities.updateComponentTreeUI(this);
 				
-				
-				
+			
 			} catch (IOException e) {
 
 				e.printStackTrace();
