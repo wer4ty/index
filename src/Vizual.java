@@ -157,25 +157,41 @@ public class Vizual extends JFrame implements ActionListener {
 			}
 			
 			else if (e.getActionCommand().equals("Select Point")) {
+				if (Vizual.tree != null) {
 				SelectDialog dialog = new SelectDialog(this, "Select Point", true);
 				dialog.setVisible(true);
 				dialog.requestFocus();
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Tree is not initialized. Before use it, please init tree", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			
 			else if (e.getActionCommand().equals("Select Range")) {
+				if (Vizual.tree != null) {
 				SelectDialog dialog = new SelectDialog(this, "Select Range", false);
 				dialog.setVisible(true);
 				dialog.requestFocus();
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Tree is not initialized. Before use it, please init tree", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			
 			else if (e.getActionCommand().equals("Delete Point")) {
+				if (Vizual.tree != null) {
 				DeleteDialog dialog = new DeleteDialog(this, "Delete Point");
 				dialog.setVisible(true);
 				dialog.requestFocus();
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Tree is not initialized. Before use it, please init tree", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			
 			else if (e.getActionCommand().equals("Insert Point")) {
-				//FoodDialog();
+				if (Vizual.tree != null) {
+					
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Tree is not initialized. Before use it, please init tree", "Error", JOptionPane.ERROR_MESSAGE);
 			}
 			
 			else if (e.getActionCommand().equals("Random Tree")) {

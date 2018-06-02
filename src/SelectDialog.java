@@ -57,7 +57,7 @@ public class SelectDialog extends JDialog implements ActionListener {
 					ArrayList<Region> way = new ArrayList<Region>();
 					if(pointSearch) {
 						String res = Vizual.tree.selectPoint(user_select.getText(), way);
-						
+						result.setText("<html>"+res+"</html>");
 						if (res.trim().equals(user_select.getText().trim())) {
 							frame.DrawTree(way, new Point(-1, res));
 						}
@@ -65,6 +65,7 @@ public class SelectDialog extends JDialog implements ActionListener {
 					}
 					else {
 						String res = Vizual.tree.selectRegionOfPoints(user_select.getText(), way);
+						result.setText("<html>"+res+"</html>");
 						frame.DrawTree(way, null);
 						System.out.println("Region search result: "+res);
 					}

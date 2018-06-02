@@ -322,38 +322,73 @@ public class RplusTree {
 	}
 	
 	
-	private void findNodeForNewPoint(Node node, Point p, Node res) {
+	private void findNodeForNewPoint(Node node, Point p, List<Node> path) {
 		if (node.isLeaf()) {
-			List<Region> current_node_regions = node.getRegions();
-			for(int i=0; i<current_node_regions.size(); i++) {
-				if(current_node_regions.get(i).RegionOverlaps(p)) {
-					res = node;
-					return;
-				}
-					
-				else
-					break;
-			}
+			path.add(node);
 		}
 		else {
 			List<NodeChild> nc = node.getChilds();
 			for(int i=0; i<nc.size(); i++) {
 				if(nc.get(i).getRegion().RegionOverlaps(p)) {
-					findNodeForNewPoint(nc.get(i).getChild(), p, res);
+					path.add(nc.get(i).getChild());
+					findNodeForNewPoint(nc.get(i).getChild(), p, path);
+					break;
 				}
 			}
 		}
 	}
 
 	public void insert(String line) {
-		Node tmp = null;
 		RplusTree.orig_points.add(line);
-		Point p = new Point(++allPoints, line);
+		Point p = new Point(allPoints, line);
+		List<Node> path = new ArrayList<Node>();
+		allPoints++;
 		
-		findNodeForNewPoint(root,p, tmp);
 		System.out.println("Insert->>>>>>>>>>>>>>");
-		System.out.println(tmp);
+		findNodeForNewPoint(root,p, path);
 		
+		// add new point to root in new region
+		if(path.size() == 0) {
+			System.out.println("Point to root");
+		}
+		
+		// add new point to node 
+		else {
+			System.out.println("Point to node");
+			Node tmp = path.get(path.size()-1);
+			List<Region> regions = tmp.getRegions();
+			Region goal_region = null;
+			for(int i=0; i<path.size(); i++) {
+				if(regions.get(i).RegionOverlaps(p)) {
+					goal_region = regions.get(i);
+					break;
+				}
+			}
+			
+			// insert to region
+			if(goal_region != null) {
+				System.out.println("\tPoint to region");
+				System.out.println("\t"+goal_region);
+				
+				
+				// if region not full add point to this region
+				if(!goal_region.isFull()) {
+					goal_region.insert(p);
+					System.out.println("Done");
+				}
+			}
+			
+			// insert to new region in this node
+			else {
+				System.out.println("\tPoint to new region");
+
+
+			}
+			
+		}
+		
+	
+		reExpandTree(root, root.getRegions()); // change mbr parametrs
 	}
 	
 	
