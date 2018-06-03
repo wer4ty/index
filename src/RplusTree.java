@@ -336,15 +336,15 @@ public class RplusTree {
 	
 	
 	private int calculateMinDistanceByMinVector(Region r, Point p) {
-		return (int) Math.abs( Math.sqrt( 
-				Math.pow(r.getMinX(), 2) - Math.pow(p.getX(), 2) + 
-				Math.pow(r.getMinY(), 2) - Math.pow(p.getY(), 2)   ) );
+		return (int)  Math.sqrt( 
+				Math.pow(r.getMinX()-p.getX(), 2)  + 
+				Math.pow(r.getMinY()-p.getY(), 2)   );
 	}
 	
 	private int calculateMinDistanceByMaxVector(Region r, Point p) {
-		return (int) Math.abs( Math.sqrt( 
-				Math.pow(r.getMaxX(), 2) - Math.pow(p.getX(), 2) + 
-				Math.pow(r.getMaxY(), 2) - Math.pow(p.getY(), 2)   ) );
+		return (int)  Math.sqrt( 
+				Math.pow(r.getMaxX()-p.getX(), 2)  + 
+				Math.pow(r.getMaxY()-p.getY(), 2)   );
 	}
 	
 	private void findClosestsRegion(Node node, Point p) {
@@ -391,11 +391,13 @@ public class RplusTree {
 		else {
 			List<NodeChild> nc = node.getChilds();
 			int distance_criteria = (int)Double.POSITIVE_INFINITY, region_index = 0;
+			boolean overlaped = false;
 			for(int i=0; i<nc.size(); i++) {
 				Region current_tmp = nc.get(i).getRegion();
 				// if region overlap go into
 				if(current_tmp.RegionOverlaps(p)) {
 					findClosestsRegion(nc.get(i).getChild(), p);
+					overlaped = true;
 					break;
 				}
 				
@@ -416,8 +418,11 @@ public class RplusTree {
 						region_index = i;
 					}
 					
-					findClosestsRegion(nc.get(region_index).getChild(), p);
+					
 				}
+			}
+			if (!overlaped) {
+				findClosestsRegion(nc.get(region_index).getChild(), p);
 			}
 		}
 	}
@@ -515,10 +520,47 @@ public class RplusTree {
 	}
 	
 	private void splitNode(Node n, Region r) {
+		// leaf node split
+		Node n2 = new Node(RplusTree.maxRegionsInNode);
 		
-		while(n.isFull()) {
+		if(n.isFull()) {
 			List<Region> rlist = n.getRegions();
-			rlist.add(r);
+			n2.insert(r);
+			
+		}
+		if(n.getParent() != null) {
+			Node node_parent = n.getParent();
+			
+			if (!node_parent.isFull()) {
+				Region internalNew = new Region(RplusTree.maxPointsInRegion);
+				NodeChild nodeChildNew = new NodeChild(internalNew, n2);
+				node_parent.insert(internalNew);
+				node_parent.insertChild(nodeChildNew);
+			}
+			
+			else {
+				
+				while(node_parent.isFull()) {
+					
+					
+					
+					if(node_parent.getParent() != null) {
+						node_parent = node_parent.getParent();
+					}
+					
+					
+					else {
+						Node newRoot = new Node(RplusTree.maxPointsInRegion);
+						Region newRootedRegion = new Region(RplusTree.maxPointsInRegion);
+						newRoot.insert(newRootedRegion);
+						newRoot.insertChild(new NodeChild(newRootedRegion, root));
+						root = newRoot;
+						return;
+					}
+				}
+				
+			}
+			
 		}
 	}
 	

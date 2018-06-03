@@ -19,9 +19,10 @@ public class Run  {
 		RplusTree t = new RplusTree(3,3);
 		RplusTree.filePath = "resourse/do_data.dat";
 		t.load(RplusTree.filePath);
-		//t.printTree();
+		t.printTree();
 		
-		//t.insert("47 34");
+		t.insert("47 34");
+		t.printTree();
 		
 //		List<Integer> myList = new ArrayList<Integer>();
 //		myList.add(0);
