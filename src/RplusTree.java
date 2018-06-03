@@ -321,76 +321,205 @@ public class RplusTree {
 		System.out.println(root);
 	}
 	
-	
-	private void findNodeForNewPoint(Node node, Point p, List<Node> path) {
-		if (node.isLeaf()) {
-			path.add(node);
-		}
-		else {
-			List<NodeChild> nc = node.getChilds();
-			for(int i=0; i<nc.size(); i++) {
-				if(nc.get(i).getRegion().RegionOverlaps(p)) {
-					path.add(nc.get(i).getChild());
-					findNodeForNewPoint(nc.get(i).getChild(), p, path);
-					break;
-				}
-			}
-		}
-	}
-
+		
 	public void insert(String line) {
+		System.out.println("Insert->>>>>>>>>>>>>>");
 		RplusTree.orig_points.add(line);
 		Point p = new Point(allPoints, line);
-		List<Node> path = new ArrayList<Node>();
+		System.out.println("point to insert "+p.toString());
 		allPoints++;
-		
-		System.out.println("Insert->>>>>>>>>>>>>>");
-		findNodeForNewPoint(root,p, path);
-		
-		// add new point to root in new region
-		if(path.size() == 0) {
-			System.out.println("Point to root");
-		}
-		
-		// add new point to node 
-		else {
-			System.out.println("Point to node");
-			Node tmp = path.get(path.size()-1);
-			List<Region> regions = tmp.getRegions();
-			Region goal_region = null;
-			for(int i=0; i<path.size(); i++) {
-				if(regions.get(i).RegionOverlaps(p)) {
-					goal_region = regions.get(i);
-					break;
-				}
-			}
-			
-			// insert to region
-			if(goal_region != null) {
-				System.out.println("\tPoint to region");
-				System.out.println("\t"+goal_region);
 				
-				
-				// if region not full add point to this region
-				if(!goal_region.isFull()) {
-					goal_region.insert(p);
-					System.out.println("Done");
-				}
-			}
-			
-			// insert to new region in this node
-			else {
-				System.out.println("\tPoint to new region");
-
-
-			}
-			
-		}
-		
+		findClosestsRegion(root,p);
 	
-		reExpandTree(root, root.getRegions()); // change mbr parametrs
+		reExpandTree(root, root.getRegions()); // change all mbr's parametrs
 	}
 	
 	
+	private int calculateMinDistanceByMinVector(Region r, Point p) {
+		return (int) Math.abs( Math.sqrt( 
+				Math.pow(r.getMinX(), 2) - Math.pow(p.getX(), 2) + 
+				Math.pow(r.getMinY(), 2) - Math.pow(p.getY(), 2)   ) );
+	}
+	
+	private int calculateMinDistanceByMaxVector(Region r, Point p) {
+		return (int) Math.abs( Math.sqrt( 
+				Math.pow(r.getMaxX(), 2) - Math.pow(p.getX(), 2) + 
+				Math.pow(r.getMaxY(), 2) - Math.pow(p.getY(), 2)   ) );
+	}
+	
+	private void findClosestsRegion(Node node, Point p) {
+		if (node.isLeaf()) {
+			
+			List<Region> leafs_region = node.getRegions();
+			int distance_criteria = (int)Double.POSITIVE_INFINITY, region_index = 0;
+			boolean overlaped = false;
+			
+			for(int i=0; i<leafs_region.size(); i++) {
+				Region current_tmp = leafs_region.get(i);
+				
+				// insert into leaf because it overlaps point
+				if(current_tmp.RegionOverlaps(p)) {
+					overlaped = true;
+					insertToLeaf(node, current_tmp, p);
+					break;
+				}
+				
+				// find closets leaf region and insert into it
+				else {
+					
+					// min vector
+					int current_distance = calculateMinDistanceByMinVector(current_tmp, p); 
+					if(current_distance < distance_criteria) { 
+						distance_criteria = current_distance;  
+						region_index = i;
+					}
+					
+					// max vector
+					current_distance = calculateMinDistanceByMaxVector(current_tmp, p);
+					if(current_distance < distance_criteria) {  
+						distance_criteria = current_distance; 
+						region_index = i;
+					}
+				}
+			}
+			
+			if (!overlaped)
+				insertToLeaf(node, leafs_region.get(region_index), p);
+			
+		}
+		
+		else {
+			List<NodeChild> nc = node.getChilds();
+			int distance_criteria = (int)Double.POSITIVE_INFINITY, region_index = 0;
+			for(int i=0; i<nc.size(); i++) {
+				Region current_tmp = nc.get(i).getRegion();
+				// if region overlap go into
+				if(current_tmp.RegionOverlaps(p)) {
+					findClosestsRegion(nc.get(i).getChild(), p);
+					break;
+				}
+				
+				// else find closets region to point by min vector distance
+				else {
+					
+					// min vector
+					int current_distance = calculateMinDistanceByMinVector(current_tmp, p); 
+					if(current_distance < distance_criteria) { 
+						distance_criteria = current_distance;  
+						region_index = i;
+					}
+					
+					// max vector
+					current_distance = calculateMinDistanceByMaxVector(current_tmp, p);
+					if(current_distance < distance_criteria) {  
+						distance_criteria = current_distance; 
+						region_index = i;
+					}
+					
+					findClosestsRegion(nc.get(region_index).getChild(), p);
+				}
+			}
+		}
+	}
+	
+	private void insertToLeaf(Node n, Region r, Point p) {
+		
+		// 1) is not full -> insert -> done
+		if(!(r.isFull())) { r.insert(p); }
+		
+		// 2) full -> split
+		else {
+			split(n, r, p);
+		}
+		
+	}
+	
+	private void split(Node n, Region r, Point p) {
+		
+		// quadratic split algorithm
+		List<Point> d = r.getPoints();
+		d.add(p);
+		
+		int region_square = r.getSquare();
+		int first_square = 0;
+		Point r1MinPoint = null, r1MaxPoint = null;
+		
+		// bild first new region
+		for (int i=0; i<d.size(); i++) {
+				Point p1 = d.get(i);
+			for (int j=0; j<d.size(); j++) {
+				int tmp_sqare = p1.squareBetween(d.get(j));
+				
+				if (tmp_sqare < region_square && tmp_sqare > first_square) {
+					first_square = tmp_sqare;
+					r1MinPoint = p1;
+					r1MaxPoint = d.get(j);
+				}
+			}
+		}
+		
+		// putin points in new region
+		Region newRegion1 = new Region(r1MinPoint.getX(), r1MinPoint.getY(), r1MaxPoint.getX(), r1MaxPoint.getY(), RplusTree.maxPointsInRegion);
+		for(int i=0; i<d.size(); i++) {
+			if(newRegion1.RegionOverlaps(d.get(i))) {
+				newRegion1.insert(d.get(i));
+			}
+		}
+		
+		// remove min point from data points because it is allready in first new region. It help avoid overlaping with new region
+		d.remove(r1MinPoint);
+		
+		// bild second new region
+		int second_square = 0;
+		Point r2MinPoint = null, r2MaxPoint = null;
+		for (int i=0; i<d.size(); i++) {
+			Point p1 = d.get(i);
+			for (int j=0; j<d.size(); j++) {
+				int tmp_sqare = p1.squareBetween(d.get(j));
+				
+				if (tmp_sqare < region_square && tmp_sqare > second_square) {
+					second_square = tmp_sqare;
+					r2MinPoint = p1;
+					r2MaxPoint = d.get(j);
+				}
+			}
+		}
+		
+		
+		// putin points in new region
+		Region newRegion2 = new Region(r2MinPoint.getX(), r2MinPoint.getY(), r2MaxPoint.getX(), r2MaxPoint.getY(), RplusTree.maxPointsInRegion);
+		for(int i=0; i<d.size(); i++) {
+			if(newRegion2.RegionOverlaps(d.get(i))) {
+				newRegion2.insert(d.get(i));
+			}
+		}
+		
+		
+		// delete splited region from node
+		int splitted_plase = n.getRegions().indexOf(r);
+		n.removeRegion(r);
+		
+		// insert first new
+		n.getRegions().add(splitted_plase,newRegion1);
+		splitted_plase++;
+		
+		// if node not full add seconds => done
+		if(! n.isFull()) n.getRegions().add(splitted_plase,newRegion2);
+		
+		// else -> split node
+		else {
+			Region last = n.getRegions().get(n.getRegions().size()-1);
+			n.getRegions().add(splitted_plase,newRegion2);
+			splitNode(n, last);
+		}
+	}
+	
+	private void splitNode(Node n, Region r) {
+		
+		while(n.isFull()) {
+			List<Region> rlist = n.getRegions();
+			rlist.add(r);
+		}
+	}
 	
 }

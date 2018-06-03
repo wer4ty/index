@@ -21,12 +21,15 @@ public class Point {
 		line = line.trim();
 		String[] s = line.split("\\s+");
 		id = _id;
-		x = s.length;		
-		int tmp_sum = 0;
+		//x = s.length;	
+		int tmp_sum = 0, sqr_sum = 0, tmp_val =0;
 		for (int i=0; i < s.length; i++) {
-			tmp_sum += Integer.parseInt(s[i]);
+			tmp_val = Integer.parseInt(s[i]);
+			tmp_sum += tmp_val;
+			sqr_sum += tmp_val * tmp_val;
 		}
-		y = tmp_sum / x;
+		y = tmp_sum / s.length;  // average of all numbers
+		x = (int) Math.sqrt(sqr_sum); // vector presentation
 	   }
  
 	
@@ -39,7 +42,13 @@ public class Point {
 	    return false;
 	}
 	
-	//public String toString() { return "\n\t\t\tP [ID: "+id+": ("+x+", "+y+")]"; }
-	public String toString() { return "\tP ["+RplusTree.orig_points.get(id)+"]"; }
+	public int squareBetween(Point p) {
+		int height = Math.abs(p.getY() - getY());
+		int width = Math.abs(p.getX() - getX());
+		return height * width;
+	}
+	
+	public String toString() { return "\n\t\t\tP [ID: "+id+": ("+x+", "+y+")]"; }
+	//public String toString() { return "\tP ["+RplusTree.orig_points.get(id)+"]"; }
 
 }

@@ -144,6 +144,14 @@ public class Region {
 	public int getMaxY() { return max_y; }
 	public int getCapacity() { return capacity; }
 	
+	public int getSquare() {
+		int height = Math.abs( max_y - min_y);
+		if (height == 0) height = 1;
+		
+		int width = Math.abs( max_x - min_x);
+		if (width == 0) height = 1;
+		return height * width;
+	}
 	
 	public void setMinX(int _c) {  min_x = _c; }
 	public void setMinY(int _c) {  min_y  = _c; }
