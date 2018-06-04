@@ -480,84 +480,83 @@ public class RplusTree {
 		}
 		newRegion2.resize();
 		
-		splitNode(n, r, newRegion1, newRegion2);
-
+		
+		int splitted_plase = n.getRegions().indexOf(r);
+		n.removeRegion(r);
+				
+		// insert new regions instead old one
+		n.getRegions().add(splitted_plase,newRegion1);
+		splitted_plase++;
+		n.getRegions().add(splitted_plase,newRegion2);
+		
+		
+		if (n.isOverWeight()) {
+			splitNode(n);
+		}
 	}
 	
-	private void splitNode(Node n, Region regionToSplit, Region newRegion1, Region newRegion2) {
+	private void splitNode(Node n) {
 				
-		// 1) tnai atzira 1: node has place for new regions
-		if (! n.isFull()) {
-			
-			int splitted_plase = n.getRegions().indexOf(regionToSplit);
-			n.removeRegion(regionToSplit);
-					
-			// insert first new
-			n.getRegions().add(splitted_plase,newRegion1);
-			splitted_plase++;
-			
-			Region last = n.getRegions().get(n.getRegions().size()-1);
-			n.removeRegion(last);
-			n.getRegions().add(splitted_plase,newRegion2);
-					
-			Node n2 = new Node(RplusTree.maxRegionsInNode);
-			n2.insert(last);
-			
-			return;
-			
+		Region last = n.getRegions().get(n.getRegions().size()-1);
+		n.removeRegion(last);
+		
+		Node n2 = new Node(RplusTree.maxRegionsInNode);
+		n2.insert(last);
+		
+		if(!n.isLeaf() ) {
+			NodeChild lastchild = n.getChilds().get(n.getChilds().size()-1);
+			n.getChilds().remove(lastchild);
+			n2.insertChild(lastchild);
 		}
 		
-		
-		// recursive split
-		else {
-			
-			
-			int splitted_plase = n.getRegions().indexOf(regionToSplit);
-			n.removeRegion(regionToSplit);
-					
-			// insert first new
-			n.getRegions().add(splitted_plase,newRegion1);
-			splitted_plase++;
-			
-			Region last = n.getRegions().get(n.getRegions().size()-1);
-			n.removeRegion(last);
-			n.getRegions().add(splitted_plase,newRegion2);
-					
-			Node n2 = new Node(RplusTree.maxRegionsInNode);
-			n2.insert(last);
 			
 			
 			// current node is root
-			 if(n.getParent() == null) {
-					Node newRoot = new Node(RplusTree.maxRegionsInNode);
-					Region newRootedRegion1 = new Region(RplusTree.maxPointsInRegion);
-					Region newRootedRegion2 = new Region(RplusTree.maxPointsInRegion);
-					newRoot.insert(newRootedRegion1);
-					newRoot.insert(newRootedRegion2);
+			if(n.getParent() == null) {
+				Node newRoot = new Node(RplusTree.maxRegionsInNode);
+				Region newRootedRegion1 = new Region(RplusTree.maxPointsInRegion);
+				Region newRootedRegion2 = new Region(RplusTree.maxPointsInRegion);
+				newRoot.insert(newRootedRegion1);
+				newRoot.insert(newRootedRegion2);
 					
-					NodeChild nc1 = new NodeChild(newRootedRegion1, n);
-					NodeChild nc2 = new NodeChild(newRootedRegion2, n2);
-					newRoot.getChilds().add(nc1);
-					newRoot.getChilds().add(nc2);
-					root = newRoot;
+				NodeChild nc1 = new NodeChild(newRootedRegion1, n);
+				NodeChild nc2 = new NodeChild(newRootedRegion2, n2);
+				newRoot.getChilds().add(nc1);
+				newRoot.getChilds().add(nc2);
+				root = newRoot;
 					
-					return;
+				return;
+			}
+			
+			else {
+				Node parent = n.getParent();
+				
+				int split_index = -1;
+				List<NodeChild> ch = parent.getChilds();
+				for(int i=0; i<ch.size(); i++) {
+					if(ch.get(i).getChild() == n) {
+						split_index = i;
+					}
 				}
-			 
-			 else {
-				 int q = -1;
-				 List<NodeChild> nc = new ArrayList<NodeChild>();
-				 nc = n.getParent().getChilds();
-				 for (int i=0; i<nc.size(); i++) {
-					 if(nc.get(i).getChild() == n) 
-						 q = i;
-				 }
-				 
-				 splitNode(n.getParent(), n.getParent().getRegions().get(q), new Region(RplusTree.maxPointsInRegion), new Region(RplusTree.maxPointsInRegion));
-			 }
-			 	
-		}
-		
+
+				
+				Region newRootedRegion1 = new Region(RplusTree.maxPointsInRegion);
+				Region newRootedRegion2 = new Region(RplusTree.maxPointsInRegion);
+				parent.getRegions().add(split_index++,newRootedRegion1);
+				parent.getRegions().add(split_index--,newRootedRegion2);
+				
+				NodeChild nc1 = new NodeChild(newRootedRegion1, n);
+				NodeChild nc2 = new NodeChild(newRootedRegion2, n2);
+				
+				parent.getChilds().add(split_index++, nc1);
+				parent.getChilds().add(split_index--,nc2);
+				
+				if(parent.isOverWeight()) {
+					splitNode(parent);
+				}
+				return;
+				
+			}
 	}
 	
 		

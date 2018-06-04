@@ -55,7 +55,8 @@ public class Node {
 	
 	public Node getParent() { return parent; }
 	
-	public boolean isFull() { if(r.size() >= capacity)  return true;  else return false; }
+	public boolean isFull() { if(r.size() == capacity)  return true;  else return false; }
+	public boolean isOverWeight() { if(r.size() > capacity)  return true;  else return false; }
 	public boolean isEmpty() { if( (r.size() == 0) && childs.size() == 0) return true; else return false; }
 	
 	public List<Region> getRegions() { return r; }
