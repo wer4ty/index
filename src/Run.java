@@ -21,8 +21,9 @@ public class Run  {
 		t.load(RplusTree.filePath);
 		t.printTree();
 		
-		t.insert("47 34");
+		t.insert("50 50");
 		t.printTree();
+
 		
 //		List<Integer> myList = new ArrayList<Integer>();
 //		myList.add(0);

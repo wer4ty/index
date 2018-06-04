@@ -434,13 +434,13 @@ public class RplusTree {
 		
 		// 2) full -> split
 		else {
-			split(n, r, p);
+			splitRegion(n, r, p);
 		}
 		
 	}
 	
-	private void split(Node n, Region r, Point p) {
-		
+	private void splitRegion(Node n, Region r, Point p) {
+			
 		// quadratic split algorithm
 		List<Point> d = r.getPoints();
 		d.add(p);
@@ -468,100 +468,97 @@ public class RplusTree {
 		for(int i=0; i<d.size(); i++) {
 			if(newRegion1.RegionOverlaps(d.get(i))) {
 				newRegion1.insert(d.get(i));
+				d.remove(d.get(i));
 			}
 		}
 		
-		// remove min point from data points because it is allready in first new region. It help avoid overlaping with new region
-		d.remove(r1MinPoint);
 		
 		// bild second new region
-		int second_square = 0;
-		Point r2MinPoint = null, r2MaxPoint = null;
-		for (int i=0; i<d.size(); i++) {
-			Point p1 = d.get(i);
-			for (int j=0; j<d.size(); j++) {
-				int tmp_sqare = p1.squareBetween(d.get(j));
-				
-				if (tmp_sqare < region_square && tmp_sqare > second_square) {
-					second_square = tmp_sqare;
-					r2MinPoint = p1;
-					r2MaxPoint = d.get(j);
-				}
-			}
-		}
-		
-		
-		// putin points in new region
-		Region newRegion2 = new Region(r2MinPoint.getX(), r2MinPoint.getY(), r2MaxPoint.getX(), r2MaxPoint.getY(), RplusTree.maxPointsInRegion);
+		Region newRegion2 = new Region(RplusTree.maxPointsInRegion);
 		for(int i=0; i<d.size(); i++) {
-			if(newRegion2.RegionOverlaps(d.get(i))) {
 				newRegion2.insert(d.get(i));
-			}
 		}
+		newRegion2.resize();
 		
-		
-		// delete splited region from node
-		int splitted_plase = n.getRegions().indexOf(r);
-		n.removeRegion(r);
-		
-		// insert first new
-		n.getRegions().add(splitted_plase,newRegion1);
-		splitted_plase++;
-		
-		// if node not full add seconds => done
-		if(! n.isFull()) n.getRegions().add(splitted_plase,newRegion2);
-		
-		// else -> split node
-		else {
+		splitNode(n, r, newRegion1, newRegion2);
+
+	}
+	
+	private void splitNode(Node n, Region regionToSplit, Region newRegion1, Region newRegion2) {
+				
+		// 1) tnai atzira 1: node has place for new regions
+		if (! n.isFull()) {
+			
+			int splitted_plase = n.getRegions().indexOf(regionToSplit);
+			n.removeRegion(regionToSplit);
+					
+			// insert first new
+			n.getRegions().add(splitted_plase,newRegion1);
+			splitted_plase++;
+			
 			Region last = n.getRegions().get(n.getRegions().size()-1);
+			n.removeRegion(last);
 			n.getRegions().add(splitted_plase,newRegion2);
-			splitNode(n, last);
+					
+			Node n2 = new Node(RplusTree.maxRegionsInNode);
+			n2.insert(last);
+			
+			return;
+			
 		}
-	}
-	
-	private void splitNode(Node n, Region r) {
-		// leaf node split
-		Node n2 = new Node(RplusTree.maxRegionsInNode);
 		
-		if(n.isFull()) {
-			List<Region> rlist = n.getRegions();
-			n2.insert(r);
+		
+		// recursive split
+		else {
 			
-		}
-		if(n.getParent() != null) {
-			Node node_parent = n.getParent();
 			
-			if (!node_parent.isFull()) {
-				Region internalNew = new Region(RplusTree.maxPointsInRegion);
-				NodeChild nodeChildNew = new NodeChild(internalNew, n2);
-				node_parent.insert(internalNew);
-				node_parent.insertChild(nodeChildNew);
-			}
+			int splitted_plase = n.getRegions().indexOf(regionToSplit);
+			n.removeRegion(regionToSplit);
+					
+			// insert first new
+			n.getRegions().add(splitted_plase,newRegion1);
+			splitted_plase++;
 			
-			else {
-				
-				while(node_parent.isFull()) {
+			Region last = n.getRegions().get(n.getRegions().size()-1);
+			n.removeRegion(last);
+			n.getRegions().add(splitted_plase,newRegion2);
 					
+			Node n2 = new Node(RplusTree.maxRegionsInNode);
+			n2.insert(last);
+			
+			
+			// current node is root
+			 if(n.getParent() == null) {
+					Node newRoot = new Node(RplusTree.maxRegionsInNode);
+					Region newRootedRegion1 = new Region(RplusTree.maxPointsInRegion);
+					Region newRootedRegion2 = new Region(RplusTree.maxPointsInRegion);
+					newRoot.insert(newRootedRegion1);
+					newRoot.insert(newRootedRegion2);
 					
+					NodeChild nc1 = new NodeChild(newRootedRegion1, n);
+					NodeChild nc2 = new NodeChild(newRootedRegion2, n2);
+					newRoot.getChilds().add(nc1);
+					newRoot.getChilds().add(nc2);
+					root = newRoot;
 					
-					if(node_parent.getParent() != null) {
-						node_parent = node_parent.getParent();
-					}
-					
-					
-					else {
-						Node newRoot = new Node(RplusTree.maxPointsInRegion);
-						Region newRootedRegion = new Region(RplusTree.maxPointsInRegion);
-						newRoot.insert(newRootedRegion);
-						newRoot.insertChild(new NodeChild(newRootedRegion, root));
-						root = newRoot;
-						return;
-					}
+					return;
 				}
-				
-			}
-			
+			 
+			 else {
+				 int q = -1;
+				 List<NodeChild> nc = new ArrayList<NodeChild>();
+				 nc = n.getParent().getChilds();
+				 for (int i=0; i<nc.size(); i++) {
+					 if(nc.get(i).getChild() == n) 
+						 q = i;
+				 }
+				 
+				 splitNode(n.getParent(), n.getParent().getRegions().get(q), new Region(RplusTree.maxPointsInRegion), new Region(RplusTree.maxPointsInRegion));
+			 }
+			 	
 		}
+		
 	}
 	
+		
 }

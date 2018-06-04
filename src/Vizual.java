@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,12 +20,11 @@ import javax.swing.text.Document;
 
 public class Vizual extends JFrame implements ActionListener {
 	private JPanel main;
-	private JEditorPane editorpane;
+	private JEditorPane editorpane;	
 	public static  String filePath = "visual/index.html";
 	public static  String emptyPath = "visual/empty.html";
 	public static RplusTree tree;
-	
-	
+		
 	public Vizual() {
 		this.setTitle("Visualization R+Tree Index");
 		
@@ -188,7 +188,9 @@ public class Vizual extends JFrame implements ActionListener {
 			
 			else if (e.getActionCommand().equals("Insert Point")) {
 				if (Vizual.tree != null) {
-					
+					InsertDialog dialog = new InsertDialog(this, "Insert new Point");
+					dialog.setVisible(true);
+					dialog.requestFocus();
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Tree is not initialized. Before use it, please init tree", "Error", JOptionPane.ERROR_MESSAGE);
@@ -206,10 +208,18 @@ public class Vizual extends JFrame implements ActionListener {
 			else if (e.getActionCommand().equals("Help")) { 
 			JOptionPane.showMessageDialog(null, "R+Tree Index\nGUI @ 338057227 33574811");
 			}
+			
+			else if (e.getActionCommand().equals("Back")) { 
+			JOptionPane.showMessageDialog(null, "Back");
+			}
+			
+			else if (e.getActionCommand().equals("Forward")) { 
+			JOptionPane.showMessageDialog(null, "Forward");
+			}
 		}
 	
 		public String randColor(int level) {
-			String[] array = {"red", "orange", "green", "blue",
+			String[] array = {"orange", "green", "blue",
 					 "maroon", "lime", "navy", "black", "aqua",
 					"purple", "olive" };
 			if (level > array.length) level = level % array.length;
@@ -217,6 +227,7 @@ public class Vizual extends JFrame implements ActionListener {
 		}
 		
 		public void recursiveVisualGenerator(Node node, StringBuilder res, int l, List<Region> path, Point search_point) {
+			int border_size = 1;
 			if (node.isLeaf()) {
 				List<Region> current_node_regions = node.getRegions();
 				res.append("<ul>");
@@ -238,9 +249,9 @@ public class Vizual extends JFrame implements ActionListener {
 					
 					String toAppend;
 					if(path != null && partOfPath)
-						toAppend = "<li style='border: 1px dashed black'><u><h3 class='highlight'>"+current_node_regions.get(i).toString()+"</h3></u>";
+						toAppend = "<li style='border: "+border_size+"px dashed black'><u><h3 class='highlight'>"+current_node_regions.get(i).toString()+"</h3></u>";
 					else
-						toAppend = "<li style='border: 1px dashed black'><u>"+current_node_regions.get(i).toString()+"</u>";
+						toAppend = "<li style='border: "+border_size+"px dashed black'><u>"+current_node_regions.get(i).toString()+"</u>";
 					
 					res.append(toAppend);
 					res.append("<div class='dataPoint'><i><b>{ ");
@@ -281,9 +292,9 @@ public class Vizual extends JFrame implements ActionListener {
 					
 					String toAppend;
 					if(path != null && partOfPath)
-						toAppend = "<li style='border: 1px solid "+color+"'><u><h3 class='highlight'>"+nc.get(i).getRegion().toString()+"</h3></u>";
+						toAppend = "<li style='border: "+border_size+"px solid "+color+"'><u><h3 class='highlight'>"+nc.get(i).getRegion().toString()+"</h3></u>";
 					else
-						toAppend = "<li style='border: 1px solid "+color+"'><u>"+nc.get(i).getRegion().toString()+"</u>";
+						toAppend = "<li style='border: "+border_size+"px solid "+color+"'><u>"+nc.get(i).getRegion().toString()+"</u>";
 					 
 					
 					res.append("<ul>");
@@ -309,8 +320,7 @@ public class Vizual extends JFrame implements ActionListener {
 		else {
 			Node tmp = Vizual.tree.get();
 			recursiveVisualGenerator(tmp, tree_representation, 0, path, p);
-			
-			 
+						 
 			try (BufferedWriter bw = new BufferedWriter(new FileWriter(Vizual.filePath))) {
 				bw.write(top);
 				bw.write(tree_representation.toString());
