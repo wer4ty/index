@@ -50,7 +50,7 @@ public class InsertDialog extends JDialog implements ActionListener {
 				}
 				else {
 						Vizual.tree.insert(user_select.getText());
-						frame.DrawTree(null, null);
+						frame.DrawTree(null, new Point(-1, user_select.getText().trim()));
 				}
 				
 			}			

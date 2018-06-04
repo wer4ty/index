@@ -48,7 +48,7 @@ public class Point {
 		return height * width;
 	}
 	
-	public String toString() { return "\n\t\t\tP [ID: "+id+": ("+x+", "+y+")]"; }
-	//public String toString() { return "\tP ["+RplusTree.orig_points.get(id)+"]"; }
+	//public String toString() { return "\n\t\t\tP [ID: "+id+": ("+x+", "+y+")]"; }
+	public String toString() { return "\tP ["+RplusTree.orig_points.get(id)+"]"; }
 
 }
