@@ -192,15 +192,14 @@ public class Vizual extends JFrame implements ActionListener {
 		}
 	
 		public String randColor(int level) {
-			String[] array = {"orange", "blue",
-					 "maroon", "lime", "navy", "black", "aqua",
-					"purple", "olive" };
-			if (level > array.length) level = level % array.length;
+			String[] array = {"orange", "TEAL", "FUCHSIA", "SILVER",  "blue",
+					 "aqua", "lime", "navy", "maroon", "purple", "olive" };
+			if (level >= array.length) level = level % array.length;
 			    return array[level];
 		}
 		
 		public void recursiveVisualGenerator(Node node, StringBuilder res, int l, List<Region> path, Point search_point) {
-			int border_size = 1;
+			int border_size = 2;
 			if (node.isLeaf()) {
 				List<Region> current_node_regions = node.getRegions();
 				res.append("<ul>");

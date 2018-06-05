@@ -53,6 +53,7 @@ public class InsertDialog extends JDialog implements ActionListener {
 					String res = Vizual.tree.selectPoint(user_select.getText(), way);
 					if (res.trim().equals(user_select.getText().trim())) {
 						JOptionPane.showMessageDialog(null, "This point is allready exist");
+						frame.DrawTree(null, new Point(-1, user_select.getText().trim()));
 					}
 					else {
 						Vizual.tree.insert(user_select.getText());

@@ -36,10 +36,10 @@ public class InitTreeDialog extends JDialog implements ActionListener {
 			b1.addActionListener(this);
 			loadFiletrigger.addActionListener(this);
 			  			  		  
-			main.add(new JLabel("Max number of points in region:"));
+			main.add(new JLabel("Max number of points in region (min 2):"));
 			main.add(MaxPointsInRegion);
 			
-			main.add(new JLabel("Max number of regions in node:"));
+			main.add(new JLabel("Max number of regions in node (min 2):"));
 			main.add(MaxRegionInNode);
 			main.add(fileP);
 			main.add(loadFiletrigger);
@@ -60,9 +60,15 @@ public class InitTreeDialog extends JDialog implements ActionListener {
 			if (e.getActionCommand().equals("Bild new Tree")) {
 				
 				if (!MaxPointsInRegion.getText().isEmpty())
-					RplusTree.maxPointsInRegion = Integer.parseInt(MaxPointsInRegion.getText());
+					if(Integer.parseInt(MaxPointsInRegion.getText()) >= 2) 
+						RplusTree.maxPointsInRegion = Integer.parseInt(MaxPointsInRegion.getText());
+					else
+						RplusTree.maxPointsInRegion = 2;
 				if (!MaxRegionInNode.getText().isEmpty())
-					RplusTree.maxRegionsInNode = Integer.parseInt(MaxRegionInNode.getText());
+					if(Integer.parseInt(MaxRegionInNode.getText()) >= 2)
+						RplusTree.maxRegionsInNode = Integer.parseInt(MaxRegionInNode.getText());
+					else
+						RplusTree.maxRegionsInNode = 2;
 				
 				// init tree
 				if (RplusTree.maxPointsInRegion <= 0 || RplusTree.maxRegionsInNode <= 0 || RplusTree.filePath == null) {
