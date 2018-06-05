@@ -48,6 +48,7 @@ public class RplusTree {
 	          id++;
 	      }
 	      allPoints = id;
+	      reader.close();
 	      return results;
 	  }
 	
@@ -323,10 +324,8 @@ public class RplusTree {
 	
 		
 	public void insert(String line) {
-		System.out.println("Insert->>>>>>>>>>>>>>");
 		RplusTree.orig_points.add(line);
 		Point p = new Point(allPoints, line);
-		System.out.println("point to insert "+p.toString());
 		allPoints++;
 				
 		findClosestsRegion(root,p);
@@ -446,7 +445,7 @@ public class RplusTree {
 		d.add(p);
 		
 		int region_square = r.getSquare();
-		int first_square = 0;
+		int first_square = -1;
 		Point r1MinPoint = null, r1MaxPoint = null;
 		
 		// bild first new region
@@ -467,8 +466,13 @@ public class RplusTree {
 		Region newRegion1 = new Region(r1MinPoint.getX(), r1MinPoint.getY(), r1MaxPoint.getX(), r1MaxPoint.getY(), RplusTree.maxPointsInRegion);
 		for(int i=0; i<d.size(); i++) {
 			if(newRegion1.RegionOverlaps(d.get(i))) {
+				if (! newRegion1.isFull()) {
 				newRegion1.insert(d.get(i));
 				d.remove(d.get(i));
+				}
+				else {
+					break;
+				}
 			}
 		}
 		
@@ -531,14 +535,19 @@ public class RplusTree {
 			else {
 				Node parent = n.getParent();
 				
-				int split_index = -1;
+				int split_index = parent.getChilds().size()-1;
 				List<NodeChild> ch = parent.getChilds();
 				for(int i=0; i<ch.size(); i++) {
 					if(ch.get(i).getChild() == n) {
 						split_index = i;
+						break;
 					}
 				}
 
+				
+				// remove previous region in parent node and nodechild
+				parent.getRegions().remove(split_index);
+				parent.getChilds().remove(split_index);
 				
 				Region newRootedRegion1 = new Region(RplusTree.maxPointsInRegion);
 				Region newRootedRegion2 = new Region(RplusTree.maxPointsInRegion);

@@ -42,7 +42,6 @@ public class Region {
 	public boolean RegionOverlaps(Point p) {
 		int px = p.getX();
 		int py = p.getY();
-		//System.out.println("P("+px+", "+py+") R{"+min_x+", "+min_y+", "+max_x+", "+max_y+"}");
 			if (min_x <= px 
 				&& px <= max_x 
 				&& min_y <= py 
@@ -164,20 +163,13 @@ public class Region {
 	public boolean isFull() {
 		if(data.size() >= capacity)  return true;  else return false; 
 		}
-	
-	//public String toString()  { return "\n\t\tR: ("+min_x+", "+min_y+", "+max_x+", "+max_y+")"; }
-	
+		
 	public String toString()  { 
-		return "\n\t\tR: ("+min_x+", "+min_y+", "+max_x+", "+max_y+")"; }
-	
-	//public String toString()  { return "\n\t\tR: == {"+data+"\t}"; }
-	
-//	public String toString()  { 
-//		if (isEmpty())
-//			return "\n\t\tInternal Region"; 
-//		else
-//			return "\n\t\tLeaf Region"; 
-//	}
+		if (isEmpty())
+			return "\n\t\tRegion"; 
+		else
+			return "\n\t\tLeaf Region"; 
+	}
 	
 	public void displayPoints() {
 		System.out.println(this);

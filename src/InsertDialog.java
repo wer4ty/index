@@ -1,9 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 
 
 
@@ -18,6 +17,7 @@ public class InsertDialog extends JDialog implements ActionListener {
 			JPanel main=new JPanel();
 			main.setLayout(new GridLayout(3,1,10,10));
 			user_select = new JTextField(10);
+			user_select.setFont(Vizual.font);
 			result = new JLabel();
 			
 				
@@ -49,8 +49,15 @@ public class InsertDialog extends JDialog implements ActionListener {
 					JOptionPane.showMessageDialog(null, "Tree is not initialized. Before use it, please init tree");
 				}
 				else {
+					ArrayList<Region> way = new ArrayList<Region>();
+					String res = Vizual.tree.selectPoint(user_select.getText(), way);
+					if (res.trim().equals(user_select.getText().trim())) {
+						JOptionPane.showMessageDialog(null, "This point is allready exist");
+					}
+					else {
 						Vizual.tree.insert(user_select.getText());
 						frame.DrawTree(null, new Point(-1, user_select.getText().trim()));
+					}
 				}
 				
 			}			

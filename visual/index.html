@@ -1,15 +1,15 @@
-<!DOCTYPE html><html><head><title>R+Tree index</title><style>ul, li {list-style-type: none;  margin: 0; padding: 0; }ul { padding-left: 20px; border: 0px solid #333; display: block; margin: 5px;  }li { padding-left: 20px; padding-top: 5px; margin-top:5px; display: block; margin-top: 10px; font-weight: bold;} .highlight { background-color: yellow; display:inline; } .dataPoint {padding-left: 20px; font-size: 10px; font-color: gray; }</style></head><body><img  src='logo.png'><ul><li style='border: 1px solid orange'><u>
-		R: (22, 15, 357, 223)</u><ul><li style='border: 1px solid green'><u>
-		R: (22, 15, 57, 35)</u><ul><li style='border: 1px dashed black'><u>
-		R: (22, 15, 34, 17)</u><div class='dataPoint'><i><b>{ 	P [17 14]  	P [34 1]   }</i></b></div></li><li style='border: 1px dashed black'><u>
-		R: (46, 29, 48, 30)</u><div class='dataPoint'><i><b>{ 	P [13 45]  	P [13 47]   }</i></b></div></li><li style='border: 1px dashed black'><u>
-		R: (49, 31, 50, 33)</u><div class='dataPoint'><i><b>{ 	P [13 49]  	P [44 22]   }</i></b></div></li><li style='border: 1px dashed black'><u>
-		R: (56, 33, 57, 35)</u><div class='dataPoint'><i><b>{ 	P [11 55]  	P [15 55]   }</i></b></div></li></ul></li></ul><ul><li style='border: 1px solid green'><u>
-		R: (58, 39, 124, 88)</u><ul><li style='border: 1px dashed black'><u>
-		R: (58, 39, 59, 41)</u><div class='dataPoint'><i><b>{ 	P [23 55]  	P [40 42]   }</i></b></div></li><li style='border: 1px dashed black'><u>
-		R: (82, 42, 91, 52)</u><div class='dataPoint'><i><b>{ 	P [15 45 67]  	P [45 45 66]   }</i></b></div></li><li style='border: 1px dashed black'><u>
-		R: (104, 73, 109, 76)</u><div class='dataPoint'><i><b>{ 	P [67 80]  	P [67 86]   }</i></b></div></li><li style='border: 1px dashed black'><u>
-		R: (122, 86, 124, 88)</u><div class='dataPoint'><i><b>{ 	P [78 95]  	P [90 86]   }</i></b></div></li></ul></li></ul><ul><li style='border: 1px solid green'><u>
-		R: (272, 166, 357, 223)</u><ul><li style='border: 1px dashed black'><u>
-		R: (272, 166, 301, 182)</u><div class='dataPoint'><i><b>{ 	P [300 32]  	P [120 245]   }</i></b></div></li><li style='border: 1px dashed black'><u>
-		R: (357, 223, 357, 223)</u><div class='dataPoint'><i><b>{ 	P [105 342]   }</i></b></div></li></ul></li></ul></li></ul></body></html>
+<!DOCTYPE html><html><head><title>R+Tree index</title><style>ul, li {list-style-type: none;  margin: 0; padding: 0; }ul { padding-left: 20px; border: 0px solid #333; display: block; margin: 5px;  }li { padding-left: 20px; padding-top: 5px; margin-top:5px; display: block; margin-top: 10px; font-weight: bold;} .highlight { background-color: yellow; display:inline; border: 1px solid black; } .dataPoint {padding-left: 20px; font-size: 10px; font-color: gray; } .tree { border:3px solid green; }</style></head><body><img  src='logo.png'><div class='tree'><h2 style='margin-left:10px;'> ROOT</h2><ul><li style='border: 1px solid orange'><u>
+		Region</u><ul><li style='border: 1px solid blue'><u>
+		Region</u><ul><li style='border: 1px dashed black'><u>
+		Leaf Region</u><div class='dataPoint'><i><b>{ 	P [34 1]   }</i></b></div></li><li style='border: 1px dashed black'><u>
+		Leaf Region</u><div class='dataPoint'><i><b>{ 	P [17 14]  	P [20 20]   }</i></b></div></li><li style='border: 1px dashed black'><u>
+		Leaf Region</u><div class='dataPoint'><i><b>{ 	P [13 45]  	P [10 10]  <span class='highlight'>	P [30 30]</span>   }</i></b></div></li></ul></li></ul><ul><li style='border: 1px solid blue'><u>
+		Region</u><ul><li style='border: 1px dashed black'><u>
+		Leaf Region</u><div class='dataPoint'><i><b>{ 	P [13 47]  	P [13 49]  	P [44 22]   }</i></b></div></li></ul></li></ul><ul><li style='border: 1px solid blue'><u>
+		Region</u><ul><li style='border: 1px dashed black'><u>
+		Leaf Region</u><div class='dataPoint'><i><b>{ 	P [11 55]  	P [15 55]  	P [23 55]   }</i></b></div></li></ul></li></ul></li></ul><ul><li style='border: 1px solid orange'><u>
+		Region</u><ul><li style='border: 1px solid maroon'><u>
+		Region</u><ul><li style='border: 1px dashed black'><u>
+		Leaf Region</u><div class='dataPoint'><i><b>{ 	P [40 40]  	P [40 42]  	P [15 45 67]   }</i></b></div></li><li style='border: 1px dashed black'><u>
+		Leaf Region</u><div class='dataPoint'><i><b>{ 	P [45 45 66]  	P [67 80]  	P [67 86]   }</i></b></div></li><li style='border: 1px dashed black'><u>
+		Leaf Region</u><div class='dataPoint'><i><b>{ 	P [78 95]  	P [90 86]  	P [300 32]   }</i></b></div></li></ul></li></ul></li></ul></div></body></html>

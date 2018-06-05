@@ -1,10 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
+
 
 
 
@@ -21,6 +20,7 @@ public class SelectDialog extends JDialog implements ActionListener {
 			main.setLayout(new GridLayout(4,1,10,10));
 			pointSearch = point;
 			user_select = new JTextField(10);
+			user_select.setFont(Vizual.font);
 			result = new JLabel();
 			
 				
@@ -60,6 +60,10 @@ public class SelectDialog extends JDialog implements ActionListener {
 						result.setText("<html>"+res+"</html>");
 						if (res.trim().equals(user_select.getText().trim())) {
 							frame.DrawTree(way, new Point(-1, res));
+						}
+						
+						else {
+							frame.DrawTree(null, null);
 						}
 						System.out.println("Point search result: "+res);
 					}

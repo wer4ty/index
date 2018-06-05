@@ -3,9 +3,7 @@ import java.awt.event.*;
 import java.io.File;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 
-import javafx.stage.FileChooser;
 
 public class InitTreeDialog extends JDialog implements ActionListener {
 	private JTextField  MaxPointsInRegion,MaxRegionInNode;
@@ -21,10 +19,13 @@ public class InitTreeDialog extends JDialog implements ActionListener {
 			main.setLayout(new GridLayout(4,2,10,10));
 			
 				
+			
 			loadFiletrigger = new JButton("Load File");
 			MaxPointsInRegion = new JTextField(20);
 			MaxPointsInRegion.setText(String.valueOf(RplusTree.maxPointsInRegion));
+			MaxPointsInRegion.setFont(Vizual.font);
 			MaxRegionInNode = new JTextField(20);
+			MaxRegionInNode.setFont(Vizual.font);
 			MaxRegionInNode.setText(String.valueOf(RplusTree.maxRegionsInNode));
 			if (RplusTree.filePath != null)
 				fileP = new JLabel("File Path: "+RplusTree.filePath);

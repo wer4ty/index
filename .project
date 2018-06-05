@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>resourse/data.dat</name>
-			<type>1</type>
-			<location>C:/Users/Server/Downloads/DBA/index/resourse/data.dat</location>
-		</link>
-	</linkedResources>
 </projectDescription>

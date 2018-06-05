@@ -1,10 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-
 import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
-
 
 
 public class DeleteDialog extends JDialog implements ActionListener {
@@ -18,6 +14,7 @@ public class DeleteDialog extends JDialog implements ActionListener {
 			JPanel main=new JPanel();
 			main.setLayout(new GridLayout(3,1,10,10));
 			user_select = new JTextField(10);
+			user_select.setFont(Vizual.font);
 			result = new JLabel();
 			
 				
